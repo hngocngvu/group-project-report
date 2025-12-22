@@ -4,7 +4,7 @@ Topic: Bubble Extraction and Dialog Translation for Japanese Manga
 Members: Nguyen Lam Tung, Nguyen Vu Hong Ngoc, Le Chi Thanh Lam, Hoang Khanh Dong, Pham Quang Vinh, Pham Quang Minh
 
 Instructions
-1. For Windows
+1. For Linux
 
 - Download LaTeX packages
 
