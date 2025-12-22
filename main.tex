@@ -1,0 +1,94 @@
+\documentclass[20pt]{article}
+\usepackage[a4paper, tmargin=0.75in, lmargin=0.80in, rmargin=0.80in, bmargin=1in]{geometry}
+\usepackage{hyperref}
+%\usepackage{multicol}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=magenta,      
+    urlcolor=blue,
+    citecolor=black,
+}
+%\usepackage[numbers,sort&compress]{natbib} % for a numerical citation list
+\usepackage{graphicx}
+\usepackage{amsmath}
+\pagestyle{empty}
+\usepackage{indentfirst}
+\usepackage{lmodern}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+
+\begin{titlepage}
+    \thispagestyle{empty}
+    \centering
+
+    \includegraphics[width=0.3\linewidth]{usth.jpg}
+
+    \vspace{2cm}
+    
+    {\Large \textbf{UNIVERSITY OF SCIENCE AND TECHNOLOGY OF HANOI}}\\[0.5cm]
+    {\large DEPARTMENT OF INFORMATION AND COMMUNICATION TECHNOLOGY}\\[2cm]
+
+    {\Huge \textbf{Group Project Report}}\\[1cm]
+    {\Huge \textbf{Bubble Extraction and \\[0.5cm]Dialog Translation for Japanese Manga}}\\[2cm]
+
+    {\fontsize{16pt}{22pt}\selectfont
+    \raggedright
+    \begin{tabular}{@{} l l l @{}}
+        \textbf{Supervisor} & Assoc. Prof. Tran Giang Son & \\[0.3cm]
+        \textbf{Group}      & 49 & \\[0.3cm]
+        \textbf{Students}  & Nguyen Lam Tung       & 23BI14446\\
+                           & Nguyen Vu Hong Ngoc   & 23BI14345\\
+                           & Hoang Khanh Dong      & 22BA13072\\
+                           & Le Chi Thanh Lam      & 23BI14248\\
+                           & Pham Quang Vinh       & 23BI14455\\
+                           & Pham Quang Minh       & 23BI14296\\
+    \end{tabular}
+    }
+
+\end{titlepage}
+
+\clearpage
+\thispagestyle{empty}
+\tableofcontents
+\clearpage
+
+
+\newpage
+\section{Acknowledgements}
+\section{Abstract}
+\section{Introduction}
+Among recent forms of entertainment, digital comics have become increasingly popular due to their distinctive hand-drawn art styles and captivating story lines that appeal to readers of various ages. To make manga accessible to global audiences, translation plays a vital role.
+
+However, the process is highly labor-intensive because translators not only interpret the text, but also edit comic pages using graphic tools, remove original dialogues, and replace them with translated content. While translation itself is already a demanding task, the additional manual work significantly increases both time and effort, leading to exhaustion, low efficiency, and quality reduction, which may impact readers' experience. 
+
+With the advancement of technology, comic translation applications were born to support translators and improve workflow efficiency. They can reduce manual workload by automating tasks so that translators can focus on delivering high-quality translations. We propose an end-to-end application supporting professional translators by extracting speech bubbles and text automatically, along with assisted translation features. This work aims to bridge computer vision and natural language processing to perform automatic manga translation.
+
+\section{Motivation}
+Applying deep learning models and computer vision techniques to manga translation has become a popular topic in academic research. However, practical applications for manga translation are limited and still present several drawbacks for professional translators. Manga Translator, Comic Translate, and Mantra Engine are representative applications developed for manga translation, corresponding respectively to web, desktop, and mobile platforms.
+
+All of these applications offer fast processing with real-time or near–real-time performance, making them suitable for personal use or beginners. Some systems also allow users to select different translation models or support multiple languages, font styles, and image formats. Nevertheless, they share a critical limitation: none of them provide an editing function for the translated text.
+
+In addition, Comic Translate requires users to obtain and configure their own API keys, which can be challenging for non-technical users. The mobile platform, Mantra Engine, produces visually unrefined text overlays that often exceed the boundaries of speech bubbles, negatively affecting readability and aesthetic quality.
+
+\section{Literature Review}
+
+\section{Methodology}
+\subsection{Dataset}
+\label{data}
+Manga109 is a dataset compiled by Aizawa Yamasaki Matsui Laboratory, Department of Information and Communication Engineering, the Graduate School of Information Science and Technology, the University of Tokyo \cite{multimedia_aizawa_2020, mtap_matsui_2017}. This dataset consists of 109 manga volumes with their dialog and segmentation annotations, intended for use in academic research.
+
+\newpage
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+
+\end{document}
