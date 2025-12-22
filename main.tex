@@ -80,11 +80,62 @@ All of these applications offer fast processing with real-time or near–real-ti
 In addition, Comic Translate requires users to obtain and configure their own API keys, which can be challenging for non-technical users. The mobile platform, Mantra Engine, produces visually unrefined text overlays that often exceed the boundaries of speech bubbles, negatively affecting readability and aesthetic quality.
 
 \section{Literature Review}
+%continue here #3 (ngoc)
+%early approaches of each stage & limitations
 
 \section{Methodology}
 \subsection{Dataset}
 \label{data}
 Manga109 is a dataset compiled by Aizawa Yamasaki Matsui Laboratory, Department of Information and Communication Engineering, the Graduate School of Information Science and Technology, the University of Tokyo \cite{multimedia_aizawa_2020, mtap_matsui_2017}. This dataset consists of 109 manga volumes with their dialog and segmentation annotations, intended for use in academic research.
+
+The dataset has 10607 images in total with 130176 annotated speech bubbles. Segmentation annotations are stored in JSON files, following COCO JSON format. Bubble masks and bounding boxes are stored in RLE and [x,y,width,height] formats, correspondingly.
+% fill nốt phần EDA của Vinh
+
+\subsection{Bubble Segmentation}
+\subsubsection{Data Preparation}
+In this work, Manga109s, a subset of the Manga109 dataset containing 87 manga volumes, was utilised for model training. In total, the training data consisted of 8649 images with 97896 annotated speech bubbles. The remaining 22 manga titles were used for evaluating, including 1958 images with 29848 annotations.
+
+As mentioned in Section \ref{data}, segmentation annotations follow RLE format, which preserves data integrity and avoids lossy compression. However, this format is not suitable for model  training, evaluating or result visualisation and therefore must be converted into polygon representations.
+
+Each JSON annotation file contains six category identifiers, including our target annotation with category ID equal to 5. To reduce data retrieval time, related information including speech balloon annotations and associated metadata were filtered and stored in a dictionary, where each manga title corresponds to one sub-dictionary.
+
+The dataset was then split and grouped at the manga volume level for training and testing. Images were copied to the corresponding directories and annotations were written to text files for each image. The dataset structure was specified in a YAML configuration file for model training and validation.
+
+Finally, original speech bubble bounding boxes were defined in the [x, y, width, height] format whereas YOLO models expect bounding boxes in the [$x_c$, $y_c$, width, height] format. Therefore, bounding boxes were normalised for storage in text files. During evaluation, YOLO internally converted them into an appropriate representation required for metric computation.
+
+\subsubsection{YOLO Segmentation architecture}
+\subsubsection{Model Training}
+\subsubsection{Post-processing for speech bubbles}
+
+\subsection{Optical Character Recognition (OCR)}
+\subsubsection{Dataset Collection}
+
+\subsection{Translation}
+
+\subsection{Evaluation metrics}
+\subsubsection{Segmentation}
+\subsubsection{NLP metrics}
+
+\section{Results and Evaluation}
+\subsection{Bubble Segmentation}
+\subsection{OCR}
+\subsection{Translation}
+
+\section{Desktop Application}
+\subsection{Architecture Overview}
+\subsection{Core Data Structures}
+
+\subsection{Functional Modules}
+\subsubsection{Segmentation Module}
+\subsubsection{OCR Module}
+\subsubsection{Machine Translation Module}
+\subsubsection{Typesetting Module}
+
+\subsection{Exception Handling}
+
+\section{Limitations and Future Works}
+\section{Conclusion}
+
 
 \newpage
 \bibliographystyle{IEEEtran}
