@@ -24,7 +24,12 @@ pdflatex main.tex
 
 2. Notes for members
 
-Each member works on his/her branch, create tex files in "sections", "subsections", "subsubsections" directories to include them in the main.tex file 
+Each member works on his/her branch, create tex files in "sections", "subsections", "subsubsections" directories to include them in the main.tex file:
+
+```
+\input{file}
+```
+DO NOT USE \include BECAUSE IT PUT OUR CONTENTS INTO A CLEAR PAGE 
 
 Example tree directory for a personal branch: 
 
