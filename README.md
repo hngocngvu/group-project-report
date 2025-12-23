@@ -29,7 +29,7 @@ Each member works on his/her branch, create tex files in "sections", "subsection
 ```
 \input{file}
 ```
-DO NOT USE \include BECAUSE IT PUT OUR CONTENTS INTO A CLEAR PAGE 
+DO NOT USE \include BECAUSE IT PUTS OUR CONTENTS INTO A CLEAR PAGE 
 
 Example tree directory for a personal branch: 
 
