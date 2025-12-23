@@ -43,7 +43,10 @@ Example tree directory for a personal branch:
 ├── references.bib
 └── sections
     ├── introduction.tex
+    ├── literature-review.tex
     ├── motivation.tex
-    └── subsections
-        └── dataset.tex
+    ├── subsections
+    │   └── dataset.tex
+    └── subsubsections
+        └── data-preparation-bubble-seg.tex
 ```
