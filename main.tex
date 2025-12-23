@@ -66,42 +66,16 @@
 \section{Acknowledgements}
 \section{Abstract}
 \section{Introduction}
-Among recent forms of entertainment, digital comics have become increasingly popular due to their distinctive hand-drawn art styles and captivating story lines that appeal to readers of various ages. To make manga accessible to global audiences, translation plays a vital role.
-
-However, the process is highly labor-intensive because translators not only interpret the text, but also edit comic pages using graphic tools, remove original dialogues, and replace them with translated content. While translation itself is already a demanding task, the additional manual work significantly increases both time and effort, leading to exhaustion, low efficiency, and quality reduction, which may impact readers' experience. 
-
-With the advancement of technology, comic translation applications were born to support translators and improve workflow efficiency. They can reduce manual workload by automating tasks so that translators can focus on delivering high-quality translations. We propose an end-to-end application supporting professional translators by extracting speech bubbles and text automatically, along with assisted translation features. This work aims to bridge computer vision and natural language processing to perform automatic manga translation.
 
 \section{Motivation}
-Applying deep learning models and computer vision techniques to manga translation has become a popular topic in academic research. However, practical applications for manga translation are limited and still present several drawbacks for professional translators. Manga Translator, Comic Translate, and Mantra Engine are representative applications developed for manga translation, corresponding respectively to web, desktop, and mobile platforms.
-
-All of these applications offer fast processing with real-time or near–real-time performance, making them suitable for personal use or beginners. Some systems also allow users to select different translation models or support multiple languages, font styles, and image formats. Nevertheless, they share a critical limitation: none of them provide an editing function for the translated text.
-
-In addition, Comic Translate requires users to obtain and configure their own API keys, which can be challenging for non-technical users. The mobile platform, Mantra Engine, produces visually unrefined text overlays that often exceed the boundaries of speech bubbles, negatively affecting readability and aesthetic quality.
 
 \section{Literature Review}
-%continue here #3 (ngoc)
-%early approaches of each stage & limitations
 
 \section{Methodology}
 \subsection{Dataset}
-\label{data}
-Manga109 is a dataset compiled by Aizawa Yamasaki Matsui Laboratory, Department of Information and Communication Engineering, the Graduate School of Information Science and Technology, the University of Tokyo \cite{multimedia_aizawa_2020, mtap_matsui_2017}. This dataset consists of 109 manga volumes with their dialog and segmentation annotations, intended for use in academic research.
-
-The dataset has 10607 images in total with 130176 annotated speech bubbles. Segmentation annotations are stored in JSON files, following COCO JSON format. Bubble masks and bounding boxes are stored in RLE and [x,y,width,height] formats, correspondingly.
-% fill nốt phần EDA của Vinh
 
 \subsection{Bubble Segmentation}
 \subsubsection{Data Preparation}
-In this work, Manga109s, a subset of the Manga109 dataset containing 87 manga volumes, was utilised for model training. In total, the training data consisted of 8649 images with 97896 annotated speech bubbles. The remaining 22 manga titles were used for evaluating, including 1958 images with 29848 annotations.
-
-As mentioned in Section \ref{data}, segmentation annotations follow RLE format, which preserves data integrity and avoids lossy compression. However, this format is not suitable for model  training, evaluating or result visualisation and therefore must be converted into polygon representations.
-
-Each JSON annotation file contains six category identifiers, including our target annotation with category ID equal to 5. To reduce data retrieval time, related information including speech balloon annotations and associated metadata were filtered and stored in a dictionary, where each manga title corresponds to one sub-dictionary.
-
-The dataset was then split and grouped at the manga volume level for training and testing. Images were copied to the corresponding directories and annotations were written to text files for each image. The dataset structure was specified in a YAML configuration file for model training and validation.
-
-Finally, original speech bubble bounding boxes were defined in the [x, y, width, height] format whereas YOLO models expect bounding boxes in the [$x_c$, $y_c$, width, height] format. Therefore, bounding boxes were normalised for storage in text files. During evaluation, YOLO internally converted them into an appropriate representation required for metric computation.
 
 \subsubsection{YOLO Segmentation architecture}
 \subsubsection{Model Training}
