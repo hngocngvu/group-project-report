@@ -21,5 +21,3 @@ bibtex main
 pdflatex main.tex
 pdflatex main.tex
 ```
-
-2. For MacOS
