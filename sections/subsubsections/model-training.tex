@@ -1,0 +1,17 @@
+Four YOLO models—YOLOv8s, YOLOv8n, YOLOv11s, and YOLOv11n—were trained using the same hyper-parameters, as shown in Table \ref{tab:yolo-hyperparams}. Apart from the defined hyper-parameters, all other training settings remained unchanged. In each epoch, images were processed in batches in parallel. Images were resized to the selected input resolution, as specified in Table \ref{tab:yolo-hyperparams} and then forwarded through the layers of the YOLO models. After each epoch, the validation loss was computed, and the model achieving a lower validation loss than the current best was saved as the best-performing model. Model parameters were updated via back propagation and used in the next epoch.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{lc}
+\toprule
+Hyper-parameter & Value \\
+\midrule
+Epochs     & 10 \\
+Image size & $1280 \times 1280$ \\
+Batch size & 4 \\
+\bottomrule
+\end{tabular}
+\caption{Training hyper-parameters for YOLO models}
+\label{tab:yolo-hyperparams}
+\end{table}
+

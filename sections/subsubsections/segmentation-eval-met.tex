@@ -1,0 +1,12 @@
+As the proposed approach addresses an instance segmentation task, all four YOLO models are evaluated using the standard COCO evaluation protocol, reporting Precision, Recall, mAP50, and $mAP@[0.5:0.95]$ for both bounding box detection and mask segmentation. Precision and Recall are defined as:
+
+\begin{equation}
+    Precision = \frac{TP}{TP + FP}
+\end{equation}
+\begin{equation}
+    Recall = \frac{TP}{TP + FN}
+\end{equation}
+
+Where TP, FP, and FN denote True Positives, False Positives, and False Negatives, respectively. A prediction is considered a true positive if its IoU with the ground-truth instance exceeds a predefined threshold; otherwise, it is counted as a false positive. Ground-truth bubbles that are not matched by any prediction are treated as false negatives.
+
+Average Precision (AP) is computed as the area under the precision--recall curve. mAP\@50 denotes the mean AP at an IoU threshold of 0.50, while $mAP@[0.5:0.95]$ averages AP over IoU thresholds from 0.50 to 0.95 with a step size of 0.05.
