@@ -12,9 +12,20 @@
 %\usepackage[numbers,sort&compress]{natbib} % for a numerical citation list
 \usepackage{graphicx}
 \usepackage{amsmath}
-\pagestyle{empty}
 \usepackage{indentfirst}
 \usepackage{lmodern}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+
+\fancyfoot[L]{\footnotesize Bubble Extraction and Dialog Translation for Japanese Manga}
+\fancyfoot[R]{\thepage}
+
+\renewcommand{\footrulewidth}{0pt}
+\renewcommand{\headrulewidth}{0pt}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -22,23 +33,21 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \begin{document}
-
+\pagenumbering{arabic}
 
 \begin{titlepage}
     \thispagestyle{empty}
     \centering
-
-    \includegraphics[width=0.3\linewidth]{img/usth.jpg}
-
-    \vspace{2cm}
-    
+    \vspace{5cm}
     {\Large \textbf{UNIVERSITY OF SCIENCE AND TECHNOLOGY OF HANOI}}\\[0.5cm]
     {\large DEPARTMENT OF INFORMATION AND COMMUNICATION TECHNOLOGY}\\[2cm]
 
+    \includegraphics[width=0.3\linewidth]{img/usth.jpg}
+    \\[2cm]
+
     {\Huge \textbf{Group Project Report}}\\[1cm]
-    {\Huge \textbf{Bubble Extraction and \\[0.5cm]Dialog Translation for Japanese Manga}}\\[2cm]
+    {\Huge \textbf{Bubble Extraction and Dialog\\[0.5cm] Translation for Japanese Manga}}\\[2cm]
 
     {\fontsize{16pt}{22pt}\selectfont
     \raggedright
@@ -80,6 +89,7 @@
 \input{sections/subsubsections/data-preparation-bubble-seg}
 \subsubsection{YOLO Segmentation architecture}
 \subsubsection{Model Training}
+\input{sections/subsubsections/model-training}
 \subsubsection{Post-processing for speech bubbles}
 
 \subsection{Optical Character Recognition (OCR)}
