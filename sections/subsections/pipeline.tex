@@ -1,0 +1,57 @@
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+        % 1. Global Styles
+        node distance = 1.5cm and 2cm, % Vertical and Horizontal spacing
+        >=Stealth,                       % Nice arrow tip style
+        line width=1pt,                  % Thickness of arrows
+        % Style for the image nodes
+        picnode/.style={
+            draw=black,       % Border color (optional, remove if not needed)
+            inner sep=0pt,    % No padding between image and border
+            outer sep=2pt,    % Space for arrows to touch
+        }
+    ]
+
+    % -----------------------------------------------------------
+    % 2. Define Helper Command for Images
+    % Change width/height here to control size
+    % -----------------------------------------------------------
+    \newcommand{\img}[1]{%
+        \includegraphics[width=3cm, height=2cm, keepaspectratio]{#1}%
+    }
+    
+    % --- LEFT COLUMN ---
+    \node[picnode] (img1) {\includegraphics[width=8cm]{img/1.png}};
+    \node[picnode, below=of img1] (img2) {\includegraphics[width=8cm]{img/2.png}};
+    \node[picnode, below=of img2] (img3) {\includegraphics[width=8cm]{img/3.png}};
+
+    % --- RIGHT COLUMN ---
+    % Place Image 5 to the right of Image 1
+    \node[picnode, right=of img1] (img5) {\includegraphics[width=8cm]{img/5.png}};
+    
+    % Place Image 4 to the right of Image 3
+    \node[picnode, right=of img3] (img4) {\includegraphics[width=8cm]{img/4.png}};
+
+    % Place Image 6 
+    \node[picnode, below=of img5] (img6) {\includegraphics[width=8cm]{img/6.png}};
+
+    % -----------------------------------------------------------
+    % 3. Draw Arrows
+    % -----------------------------------------------------------
+    
+    % Left Vertical Flow
+    \draw[->] (img1) -- node[right, font=\small] {1. Instance Segment} (img2);
+    \draw[->] (img2) -- node[right, font=\small] {3. Convex Defect}(img3);
+
+    % Horizontal Connections
+    \draw[->] (img2) -- node[right, font=\small] {2. Overlay mask} (img5);
+    \draw[->] (img3) -- node[above, font=\small] {4. OCR} (img4);
+
+    % Right Vertical Flow (Sandwich)
+    \draw[->] (img5) -- node[right, font=\small] {6. Fill Text}(img6); % Down
+    \draw[->] (img4) -- node[right, font=\small] {5. Translation}(img6); % Up
+
+    \end{tikzpicture}
+    \caption{Pipeline Workflow}
+\end{figure}

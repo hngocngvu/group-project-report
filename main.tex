@@ -16,6 +16,9 @@
 \usepackage{lmodern}
 \usepackage{float}
 \usepackage{booktabs}
+\usepackage{tikz}
+\usetikzlibrary{positioning, arrows.meta, calc}
+
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \fancyhf{}
@@ -77,19 +80,30 @@
 
 \section{Introduction}
 \input{sections/introduction}
+
 \section{Motivation}
 \input{sections/motivation}
+
 \section{Literature Review}
+\input{sections/literature-review}
 
 \section{Methodology}
+\subsection{Pipeline}
+\input{sections/subsections/pipeline}
+
 \subsection{Dataset}
 \input{sections/subsections/dataset}
+
 \subsection{Bubble Segmentation}
+
 \subsubsection{Data Preparation}
 \input{sections/subsubsections/data-preparation-bubble-seg}
+
 \subsubsection{YOLO Segmentation architecture}
+
 \subsubsection{Model Training}
 \input{sections/subsubsections/model-training}
+
 \subsubsection{Post-processing for speech bubbles}
 
 \subsection{Optical Character Recognition (OCR)}
@@ -99,10 +113,13 @@
 
 \subsection{Evaluation metrics}
 \subsubsection{Segmentation}
+\input{sections/subsubsections/segmentation-eval-met}
 \subsubsection{NLP metrics}
 
 \section{Results and Evaluation}
 \subsection{Bubble Segmentation}
+\input{sections/subsections/bubble-seg-res.tex}
+
 \subsection{OCR}
 \subsection{Translation}
 
