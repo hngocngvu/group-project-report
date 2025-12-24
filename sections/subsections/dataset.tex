@@ -1,5 +1,14 @@
 \label{data}
 Manga109 is a dataset compiled by Aizawa Yamasaki Matsui Laboratory, Department of Information and Communication Engineering, the Graduate School of Information Science and Technology, the University of Tokyo \cite{multimedia_aizawa_2020, mtap_matsui_2017}. This dataset consists of 109 manga volumes with their dialog and segmentation annotations, intended for use in academic research.
 
-The dataset has 10607 images in total with 130176 annotated speech bubbles. Segmentation annotations are stored in JSON files, following COCO JSON format. Bubble masks and bounding boxes are stored in RLE and [x,y,width,height] formats, correspondingly.
-% fill nốt phần EDA của Vinh
+The dataset contains 10,607 images, of which 9,916 include speech bubbles, with a total of 130,176 bubbles. Segmentation annotations are stored in in COCO-format JSON files. Bubble masks and bounding boxes are stored in RLE and [x,y,width,height] formats, correspondingly.
+In this work, only images containing annotated speech bubbles are used for model training and evaluation. The maximum number of speech bubbles in a single image is 44, and on average, each image contains approximately 13 bubbles, indicating a relatively high bubble density. The bubble distribution following COCO standard is illustrated in Figure \ref{fig:bubble_distribution}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{img/bubble-distribution.png}
+    \caption{Speech bubble distribution in Manga109 dataset following COCO standard.}
+    \label{fig:bubble_distribution}
+\end{figure}
+
+Figure \ref{fig:bubble_distribution} illustrates that speech bubbles considered as large objects make up  46.8\% in total. Medium and small bubbles account for 36.4\% and 16.8\%, respectively. This distribution indicates a significant presence of large speech bubbles in the dataset, which may influence the performance of detection models, as larger objects are generally easier to detect than smaller ones.
