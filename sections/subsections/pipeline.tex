@@ -54,4 +54,11 @@
 
     \end{tikzpicture}
     \caption{Pipeline Workflow}
+    \label{pipeline}
 \end{figure}
+
+Figure~\ref{pipeline} illustrates the overall pipeline of our manga translation system.
+First, speech bubbles in the input image are segmented using a YOLO-based model, producing instance-level bounding boxes and original segmentation masks.
+These masks are then refined using convex defect analysis to improve the geometric quality of bubble regions and to separate overlapping bubbles, which facilitates subsequent text processing.
+Next, manga-ocr is applied to recognize Japanese text within the refined speech bubble regions. The recognized text is translated to English using elan-mt-ja-en.
+Finally, the translated text is rendered onto the original image based on the original segmentation masks, preserving the visual appearance of the speech bubbles in the final output.
