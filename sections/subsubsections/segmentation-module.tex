@@ -1,0 +1,5 @@
+\texttt{SegmentBubbleTab} manages the initial image acquisition and object detection. In this tab, the images are loaded via \texttt{PIL} for backend processing and converted to \texttt{QPixmap} for frontend rendering in the \texttt{QGraphicsScene}. 
+The module wraps the Ultralytics YOLO model. The users can load custom weights from a \texttt{.pt} file and adjust the confidence threshold slider to tune sensitivity dynamically. 
+
+The resulting detection masks are converted into QGraphicsPolygonItem overlays. The system binds the visual polygon to the logical \texttt{Bubble} object by using \texttt{setData(key, value)}. This linkage allows the system to identify exactly which data object to remove from \texttt{AppData} when a user selects a polygon and triggers the delete command. 
+

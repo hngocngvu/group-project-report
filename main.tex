@@ -1,4 +1,4 @@
-\documentclass[20pt]{article}
+\documentclass{article}
 \usepackage[a4paper, tmargin=0.75in, lmargin=0.80in, rmargin=0.80in, bmargin=1in]{geometry}
 \usepackage{hyperref}
 %\usepackage{multicol}
@@ -107,13 +107,13 @@
 \subsubsection{Post-processing for speech bubbles}
 
 \subsection{Optical Character Recognition (OCR)}
-\subsubsection{Dataset Collection}
 
 \subsection{Translation}
 
 \subsection{Evaluation metrics}
 \subsubsection{Segmentation}
 \input{sections/subsubsections/segmentation-eval-met}
+
 \subsubsection{NLP metrics}
 
 \section{Results and Evaluation}
@@ -125,16 +125,30 @@
 
 \section{Desktop Application}
 \subsection{Architecture Overview}
-\subsection{Use Case Description} 
-\subsection{Core Data Structures}
+\input{sections/subsections/architecture-overview}
 
-\subsection{Functional Modules}
+\subsection{Use Case Description} 
+
+\subsection{Core Data Structures}
+\input{sections/subsections/core-ds}
+
+\subsection{Functional Components}
+\input{sections/subsections/functional-modules}
+
 \subsubsection{Segmentation Module}
+\input{sections/subsubsections/segmentation-module}
+
 \subsubsection{OCR Module}
+\input{sections/subsubsections/ocr-module}
+
 \subsubsection{Machine Translation Module}
+\input{sections/subsubsections/machine-trans-module}
+
 \subsubsection{Typesetting Module}
+\input{sections/subsubsections/typesetter-module}
 
 \subsection{Exception Handling}
+\input{sections/subsections/exception}
 
 \section{Limitations and Future Works}
 \section{Conclusion}
