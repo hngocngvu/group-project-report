@@ -1,0 +1,4 @@
+The AppData class is an object that holds the global state, including \verb|pil_image|, \verb|image_path|, and a list of \verb|Bubble| objects. This allows each component to access the image the moment it is loaded in the Segmentation module. 
+
+The \verb|Bubble| class is an object that holds specific detection instances. It holds the geometry of a bubble including the segmentation mask in \verb|QPolygonF| and the bounding box \verb|bbox|. The text recognized by the OCR tab and the corresponding English translation are also stored here. In the UI, these data objects are linked to visual elements using Qt's UserRole data storage, allowing direct object retrieval. 
+

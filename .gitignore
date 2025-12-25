@@ -6,3 +6,6 @@
 *.pdf
 *.toc
 #/img 
+default.nix
+.direnv/
+.envrc
