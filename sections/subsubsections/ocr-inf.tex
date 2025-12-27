@@ -1,0 +1,11 @@
+The inference pipeline transforms the raw crops from the segmentation module into a coherent dialogue transcript.
+
+We employ a centroid-based algorithm to map text annotations to bubble regions. Let $b$ be a detected bubble mask and $t$ be a text bounding box with center $C(x, y)$. The association function $f(t, b)$ is defined as:
+\begin{equation}
+    f(t, b) = \begin{cases}
+    1 & \text{if } C(x,y) \in \text{Area}(b), \\
+    0 & \text{otherwise}
+    \end{cases}
+\end{equation}
+
+For each sorted crop, we generate text using \textbf{Beam Search} (width $k=4$). We apply a length penalty $alpha=2.0$ to the scoring function to encourage the generation of complete sentences, ensuring that longer dialogue lines are not truncated prematurely.
