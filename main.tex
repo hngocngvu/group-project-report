@@ -11,7 +11,10 @@
 }
 %\usepackage[numbers,sort&compress]{natbib} % for a numerical citation list
 \usepackage{graphicx}
+\usepackage{subcaption}
 \usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
 \usepackage{indentfirst}
 \usepackage{lmodern}
 \usepackage{float}
@@ -100,13 +103,25 @@
 \input{sections/subsubsections/data-preparation-bubble-seg}
 
 \subsubsection{YOLO Segmentation architecture}
+\input{sections/subsubsections/yolo-architecture}
 
 \subsubsection{Model Training}
 \input{sections/subsubsections/model-training}
 
 \subsubsection{Post-processing for speech bubbles}
+\input{sections/subsubsections/post-yolo}
 
 \subsection{Optical Character Recognition (OCR)}
+\input{sections/subsections/ocr}
+
+\subsubsection{Model architecture}
+\input{sections/subsubsections/ocr-arch}
+
+\subsubsection{Inference algorithm}
+\input{sections/subsubsections/ocr-inf}
+
+\subsubsection{Post-processing for OCR results}
+\input{sections/subsubsections/ocr-postproc}
 
 \subsection{Translation}
 

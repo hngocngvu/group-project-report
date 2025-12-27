@@ -1,0 +1,59 @@
+In this study, we employ the YOLO architecture adapted for instance segmentation tasks. Specifically, we investigate two versions: YOLOv8 \cite{10533619} and YOLOv11 \cite{yolo11_ultralytics}.  While both models share a fundamental Anchor-Free, One-Stage detection paradigm, YOLO11 introduces significant architectural refinements to improve feature extraction and processing speed.
+The segmentation architecture consists of three primary components: the Backbone, Neck, and Head.
+
+\begin{enumerate}
+    \item \textbf{Backbone:} The Backbone is responsible for extracting feature maps from the input manga pages.
+YOLOv8 utilises the CSPDarknet structure enhanced with C2f (Cross Stage Partial bottleneck with 2 convolutions) modules. The C2f module improves information flow by merging the concepts of C3 modules \cite{9150780} and ELAN (Efficient Layer Aggregation Networks) \cite{wang2022designingnetwork}.
+
+YOLOv11 replaces the C2f module with the C3k2 block (C3k with a customable kernel size). Furthermore and integrates the C2PSA (Convolutional Block with Parallel Spatial Attention) module at the end of the backbone \cite{yolo11_ultralytics}. This attention mechanism allows the model to focus more effectively on spatial features such as the contours of a bubble against complex manga backgrounds before passing data to the Neck. 
+The architectures of the C2PSA module, the attention block in YOLOv11, the C2f module, and the C3k2 module are illustrated in Figures \ref{fig:c2psa_psablock} and \ref{fig:c2f_c3k2}.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=0.9\linewidth]{img/C2PSA.png}
+        \caption{C2PSA module}
+    \end{subfigure}
+    \hspace{-1.5em}
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=0.7\linewidth]{img/PSABlock.png}
+        \caption{Attention block (YOLOv11)}
+    \end{subfigure}
+    \caption{Architecture of PSA-based modules: (a) C2PSA module; (b) attention block used in YOLOv11.}
+    \label{fig:c2psa_psablock}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=0.9\linewidth]{img/C2f.png}
+        \caption{C2f module}
+    \end{subfigure}
+    \hspace{-1.5em}
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=0.7\linewidth]{img/C3k2.png}
+        \caption{C3k2 module (YOLOv11)}
+    \end{subfigure}
+    \caption{Comparison of backbone modules: (a) C2f module; (b) C3k2 module adopted in YOLOv11.}
+    \label{fig:c2f_c3k2}
+\end{figure}
+
+    \item \textbf{Neck (Feature Fusion):} Both versions employ a PANet (Path Aggregation Network) \cite{8579011} structure combined with an FPN (Feature Pyramid Network) \cite{8099589}. This component aggregates features from different backbone stages. Since manga bubbles can range from tiny whispers to page-dominating shouts, this multi-scale fusion is critical for detecting instances of all sizes effectively.
+    \item \textbf{Segmentation Head for Mask Generation:} Unlike standard object detection, the output of segmentation head is pixel-wise mask, followed by Decoupled Head architecture \cite{ge2021yoloxexceedingyoloseries}, which separates the classification and regression tasks.
+    
+    Following the YOLACT (You Only Look At Coefficients) principle \cite{9010373}, the mask generation pipeline begins with Protonet, a dedicated branch that learns a fixed set of k prototype masks—generic bases that are shared across every image and never conditioned on any particular object. Concurrently, the detection head predicts, for each anchor, k scalar mask coefficients that encode the instance-specific contribution of every prototype. These coefficients are multiplied with their corresponding prototypes, the weighted maps are summed, a sigmoid activation converts the logits to per-pixel probabilities, and the resulting mask is finally cropped to the predicted bounding box to produce the assembled instance mask.
+    The architecture of YOLACT is illustrated in Figure \ref{fig:yolo-segmentation-head}.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.7\linewidth]{img/YOLACT.png}
+        \caption{YOLACT architecture}
+        \label{fig:yolo-segmentation-head}
+    \end{figure}
+
+\end{enumerate}

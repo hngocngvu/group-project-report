@@ -1,0 +1,11 @@
+We utilize the official pre-trained weights of the \texttt{manga-ocr-base} model. Training a robust manga OCR model from scratch requires generating millions of synthetic image-text pairs and significant computational resources to converge. By leveraging the pre-trained model, which has already learned high-level feature representations from extensive synthetic datasets (based on CC-100 corpus and Manga109), we achieve state-of-the-art performance without the overhead of training.
+
+The model follows a \textbf{Vision Encoder-Decoder} architecture with approximately 115 million parameters:
+
+\begin{enumerate}
+    \item \textbf{Vision Encoder (ViT):} The backbone is a Data-efficient Image Transformer (DeiT-Tiny). It processes the input image $I$ by splitting it into fixed-size patches of $16 \times 16$ pixels. These patches are linearly projected into embedding vectors and processed via Multi-Head Self-Attention (MSA) to capture global spatial dependencies. 
+    \item \textbf{Text Decoder (BERT):} The decoder is a Japanese character-level BERT model adapted for autoregressive generation. Crucially, it employs a \textbf{Cross-Attention} mechanism connecting the visual features $H_{\text{enc}}$ to the text hidden states $H_{\text{dec}}$. The attention weights determine which visual patches are relevant for the current character being generated:
+    \begin{equation}
+        \text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
+    \end{equation}
+\end{enumerate}
