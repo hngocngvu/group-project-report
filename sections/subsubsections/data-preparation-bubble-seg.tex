@@ -1,7 +1,5 @@
 In this work, Manga109s, a subset of the Manga109 dataset \cite{multimedia_aizawa_2020, mtap_matsui_2017} containing 87 manga volumes, was utilised for model training. In total, the training data consisted of 7958 images with 97896 annotated speech bubbles. The remaining 22 manga titles were used for evaluating, including 1958 images with 29848 annotations.
 
-As mentioned in Section \ref{data}, segmentation annotations follow RLE format, which preserves data integrity and avoids lossy compression. However, this format is not suitable for model  training, evaluating or result visualisation and therefore must be converted into polygon representations.
-
 Each JSON annotation file contains six category identifiers, including our target annotation with category ID equal to 5. To reduce data retrieval time, related information including speech balloon annotations and associated metadata were filtered and stored in a dictionary, where each manga title corresponds to one sub-dictionary.
 
 The dataset was then split and grouped at the manga volume level for training and testing. Images were copied to the corresponding directories and annotations were written to text files for each image. The dataset structure was specified in a YAML configuration file for model training and validation.
