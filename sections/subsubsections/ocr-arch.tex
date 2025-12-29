@@ -1,4 +1,13 @@
 We utilize the official pre-trained weights of the \texttt{manga-ocr-base} model. Training a robust manga OCR model from scratch requires generating millions of synthetic image-text pairs and significant computational resources to converge. By leveraging the pre-trained model, which has already learned high-level feature representations from extensive synthetic datasets (based on CC-100 corpus and Manga109), we achieve state-of-the-art performance without the overhead of training.
+The architecture of the Manga-OCR model is illustrated in Figure \ref{fig:manga-ocr-architecture}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{img/manga-ocr-pipeline.png}
+    \caption{Manga-OCR Model Architecture}
+    \label{fig:manga-ocr-architecture}
+\end{figure}
+
 
 The model follows a \textbf{Vision Encoder-Decoder} architecture with approximately 115 million parameters:
 
@@ -12,3 +21,8 @@ The model follows a \textbf{Vision Encoder-Decoder} architecture with approximat
         \text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
     \end{equation}
 \end{enumerate}
+
+where $Q$ (Query) denotes the textual context from decoder states $H_{\text{dec}}$;
+$K$ (Key) and $V$ (Value) denote visual features from encoder states $H_{\text{enc}}$;
+$W_Q$, $W_K$, and $W_V$ are learnable projection matrices; and
+$d_k$ is the key dimensionality used for gradient stabilization.
