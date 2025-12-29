@@ -80,6 +80,11 @@
 
 \end{titlepage}
 
+\newpage 
+\addtocontents{toc}{\protect\setcounter{tocdepth}{-1}}
+\section*{Acknowledgements}
+\addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
+
 \clearpage
 \thispagestyle{empty}
 \tableofcontents
@@ -87,17 +92,22 @@
 
 
 \newpage
-\section{Acknowledgements}
-\section{Abstract}
+\addtocontents{toc}{\protect\setcounter{tocdepth}{-1}}
+\centering 
+\section*{Abstract}
+\addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
+\input{sections/abstract}
 
+\raggedright
+\setlength{\parindent}{1.5em}
 \section{Introduction}
 \input{sections/introduction}
 
 \section{Motivation}
 \input{sections/motivation}
 
-\section{Literature Review}
-\input{sections/literature-review}
+%\section{Literature Review}
+%\input{sections/literature-review}
 
 \section{Methodology}
 \subsection{Pipeline}
@@ -145,7 +155,7 @@
 \input{sections/subsections/bubble-seg-res.tex}
 
 \subsection{OCR}
-\input{sections/subsections/ocr-results.tex}
+\input{sections/subsubsections/ocr-results.tex}
 
 \subsection{Translation}
 
@@ -153,7 +163,19 @@
 \subsection{Architecture Overview}
 \input{sections/subsections/architecture-overview}
 
-\subsection{Use Case Description} 
+\subsection{Use Case Specification} 
+\input{sections/subsections/ucd}
+
+\subsubsection{UC\_01: Manage image size}
+\input{sections/subsubsections/uc-01}
+\subsubsection{UC\_02: Segment bubbles}
+\input{sections/subsubsections/uc-02}
+\subsubsection{UC\_03: Recognize texts}
+\input{sections/subsubsections/uc-03}
+\subsubsection{UC\_04: Translate texts}
+\input{sections/subsubsections/uc-04}
+\subsubsection{UC\_05: Replace translated texts}
+\input{sections/subsubsections/uc-05}
 
 \subsection{Core Data Structures}
 \input{sections/subsections/core-ds}
