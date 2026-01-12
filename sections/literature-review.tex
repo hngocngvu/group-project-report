@@ -1,10 +1,8 @@
-%early approaches of each stage & limitations
-%why we use them 
-Earlier papers written about Japanese manga mostly researched separated stages of manga translation, including speech balloon segmentation, optical character recognition (OCR) and translation. 
+%early approaches of each stage
+Manga translation is not a new research topic since there are many publications working on automatic manga translation.
+In 2022, Saikumar et al. \cite{saikumar2022automatic} presented an automated system for translating manga and integrating a multi-stage process into a functional framework.
+Authors mentioned a common issue with Japanese while performing translation: Japanese lacks spaces between words and its word ordering in manga (from left to right vertically) are challenging to conventional OCR.
+Another paper by Hinami et al. \cite{hinami2021towards} raised another difficulty in context understanding since a character can be divided up into multiple bubbles (narrations) and the order of speech bubbles.
 
-For speech balloon segmentation, Rigaud et al. (2017) \cite{rigaud2017textindependent} proposed an adaptive thresholding method to binarize grayscale images and extract connected components, identifying speech balloons based on their content topology and alignment. In 2019, Dubray and Laubrock \cite{dubray2019deepcnn} employed a deep convolutional network with a U-Net architecture and a pre-trained VGG-16 encoder to segment speech balloons in comics. Later, Melista et al. (2021) \cite{melistas2021deep} combined Faster R-CNN for balloon bounding box detection with U-Net for pixel-level segmentation of speech balloons.
-While these methods focus on semantic segmentation, in practical application, it is more useful to process individual balloons separately, enabling easier and accurate text replacement in the original image.
-%nothing for OCR
-For machine translation, Zhou et al. (2021) \cite{zhou2021niutrans} 
 
 

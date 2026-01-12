@@ -6,7 +6,7 @@ The segmentation architecture consists of three primary components: the Backbone
 YOLOv8 utilises the CSPDarknet structure enhanced with C2f (Cross Stage Partial bottleneck with 2 convolutions) modules. The C2f module improves information flow by merging the concepts of C3 modules \cite{9150780} and ELAN (Efficient Layer Aggregation Networks) \cite{wang2022designingnetwork}.
 
 YOLOv11 replaces the C2f module with the C3k2 block (C3k with a customable kernel size). Furthermore and integrates the C2PSA (Convolutional Block with Parallel Spatial Attention) module at the end of the backbone \cite{yolo11_ultralytics}. This attention mechanism allows the model to focus more effectively on spatial features such as the contours of a bubble against complex manga backgrounds before passing data to the Neck. 
-The architectures of the C2PSA module, the attention block in YOLOv11, the C2f module, and the C3k2 module are illustrated in Figures \ref{fig:c2psa_psablock} and \ref{fig:c2f_c3k2}.
+The architectures of the C2PSA module, the attention block in YOLOv11, the C2f module, and the C3k2 module are illustrated in Figures \ref{fig:c2psa_psablock} \cite{hidayatullah2025yolov8_yolo11_review} and \ref{fig:c2f_c3k2}  \cite{hidayatullah2025yolov8_yolo11_review}.
 
 \begin{figure}[H]
     \centering

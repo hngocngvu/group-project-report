@@ -1,0 +1,90 @@
+% --- Part 1: SplitConnectedBubbles ---
+\begin{algorithm}[H]
+\caption{Split Merged Speech Bubbles Using Convexity Defects (Part 1)}
+\begin{algorithmic}[1]
+\State \textbf{Input:} $M$ (Binary mask of detected bubble), $depth$ (current recursion depth)
+\State \textbf{Output:} List of separated bubble masks
+
+\Function{SplitConnectedBubbles}{$M, depth$}
+    \If{$depth \geq \text{MAX\_SPLIT\_DEPTH}$}
+        \State \Return $[M]$
+    \EndIf
+    \State $sub\_masks \gets \Call{AttemptSplitOnce}{M}$
+
+    \If{$|sub\_masks| = 1$}
+        \State \Return $sub\_masks$
+    \EndIf
+    \State $result \gets \emptyset$
+    \ForAll{$sub \in sub\_masks$}
+        \State $result \gets result \cup \Call{SplitConnectedBubbles}{sub, depth + 1}$
+    \EndFor
+    \State \Return $result$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+% --- Part 2: AttemptSplitOnce ---
+\begin{algorithm}[H]
+\caption{Split Merged Speech Bubbles Using Convexity Defects (Part 2)}
+\begin{algorithmic}[1]
+\State \textbf{Input:} $M$ (Binary mask of detected bubble)
+\State \textbf{Output:} List of separated bubble masks
+
+\Function{AttemptSplitOnce}{$M$}
+    \State $contour \gets \Call{LargestContour}{M}$
+    \If{$contour = \emptyset$ \textbf{or} \Call{Area}{contour} < 500}
+        \State \Return $[M]$
+    \EndIf
+    \State $hull \gets \Call{ConvexHull}{contour}$
+    \State $defects \gets \Call{ConvexityDefects}{contour, hull}$
+    \If{$defects = \emptyset$}
+        \State \Return $[M]$
+    \EndIf
+
+    \State $candidates \gets \emptyset$
+    \ForAll{$(s,e,f,d) \in defects$}
+        \State $depth\_val \gets d / 256.0$
+        \If{$depth\_val > \text{MIN\_DEFECT\_DEPTH}$}
+            \State $\vec{v_1} \gets s - f$, $\vec{v_2} \gets e - f$
+            \State $angle \gets \arccos\left(\frac{\vec{v_1} \cdot \vec{v_2}}{|\vec{v_1}| |\vec{v_2}|}\right)$
+            \If{$angle < \text{MAX\_ANGLE\_DEG}$}
+                \State $candidates \gets candidates \cup \{(f, depth\_val)\}$
+            \EndIf
+        \EndIf
+    \EndFor
+
+    \State $candidates \gets \Call{SortByDepth}{candidates, descending}$
+    \State $unique \gets \emptyset$
+    \ForAll{$c \in candidates$}
+        \If{$\forall u \in unique: \|c.point - u.point\| \geq \text{MIN\_DIST}$}
+            \State $unique \gets unique \cup \{c\}$
+        \EndIf
+    \EndFor
+
+    \State $M_{cut} \gets M$
+    \State $cut\_happened \gets false$
+    \If{$|unique| \geq 2$}
+        \State $top4 \gets$ first 4 elements of $unique$
+        \State $(p_1,p_2) \gets \Call{ClosestPair}{top4}$
+        \State \Call{DrawLine}{$M_{cut}, p_1, p_2$, color=0, thickness=3}
+        \State $cut\_happened \gets true$
+    \EndIf
+
+    \If{$cut\_happened$}
+        \State $contours_{new} \gets \Call{FindContours}{M_{cut}}$
+        \State $masks_{new} \gets \emptyset$
+        \ForAll{$c \in contours_{new}$}
+            \If{\Call{Area}{c} > 100}
+                \State $m \gets \Call{CreateMaskFrom}{c}$
+                \State $masks_{new} \gets masks_{new} \cup \{m\}$
+            \EndIf
+        \EndFor
+        \If{$|masks_{new}| > 1$}
+            \State \Return $masks_{new}$
+        \EndIf
+    \EndIf
+
+    \State \Return $[M]$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+

@@ -1,0 +1,25 @@
+We integrate three specific variants of the model to balance translation quality and computational efficiency, as shown in
+Table \ref{tab:translation-variants}.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|l|}
+        \hline
+        \textbf{Model Name} & \textbf{Parameters} & \textbf{Description} \\
+        \hline
+        Mitsua/elan-mt-bt-ja-en & 61M & Back-translation augmented variant with \\
+        & & improved handling of colloquial expressions\\
+        \hline
+        Mitsua/elan-mt-base-ja-en & 61M & Base model trained on parallel corpora \\
+        \hline
+        Mitsua/elan-mt-tiny-ja-en & 15M & Lightweight variant optimized for inference speed \\
+        \hline
+    \end{tabular}
+    \caption{Variants of the Mitsua/elan-mt model family}
+    \label{tab:translation-variants}
+
+\end{table}
+
+The \textbf{bt} (back-translation) variant employs data augmentation through synthetic parallel data generation, where monolingual English text is translated back to Japanese to create additional training pairs
+
+The \textbf{tiny} variant reduces the model depth and hidden dimensions, achieving approximately 4× parameter reduction while maintaining reasonable translation quality. This variant is suitable for resource-constrained environments or applications requiring real-time inference.
