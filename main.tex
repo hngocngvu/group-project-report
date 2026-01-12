@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage[a4paper, tmargin=0.75in, lmargin=0.80in, rmargin=0.80in, bmargin=1in]{geometry}
+\usepackage[a4paper, tmargin=1.5cm, lmargin=1.5cm, rmargin=1.5cm, bmargin=1.5cm]{geometry}
 \usepackage{hyperref}
 %\usepackage{multicol}
 \hypersetup{
@@ -11,10 +11,8 @@
 }
 %\usepackage[numbers,sort&compress]{natbib} % for a numerical citation list
 \usepackage{graphicx}
-\usepackage{subcaption}
-\usepackage{amsmath}
-\usepackage{algorithm}
-\usepackage{algpseudocode}
+\usepackage{caption}
+\usepackage{subcaption} % trong preamble
 \usepackage{indentfirst}
 \usepackage[utf8]{inputenc}
 \usepackage{textcomp}
@@ -24,11 +22,14 @@
 \usepackage{array}
 \usepackage{xcolor}
 \usepackage{colortbl}
-\usepackage{caption}
 \usepackage{lmodern}
 \usepackage{float}
 \usepackage{booktabs}
 \usepackage{tikz}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{amsmath,amssymb} 
+
 \usetikzlibrary{positioning, arrows.meta, calc}
 
 \usepackage{fancyhdr}
@@ -49,6 +50,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
+\begin{CJK*}{UTF8}{gbsn}
 \pagenumbering{arabic}
 
 \begin{titlepage}
@@ -103,20 +105,27 @@
 \section{Introduction}
 \input{sections/introduction}
 
-\section{Motivation}
-\input{sections/motivation}
-
-%\section{Literature Review}
-%\input{sections/literature-review}
+\section{Literature Review}
+\input{sections/literature-review}
+\subsection{Speech Bubble Segmentation}
+\input{sections/subsections/bubble-lr}
+\subsection{Optical Character Recognition (OCR)}
+\input{sections/subsections/ocr-lr}
+\subsection{Machine Translation}
+\input{sections/subsections/translation-lr}
+\subsection{Typesetting}
+\input{sections/subsections/typesetting-lr}
 
 \section{Methodology}
-\subsection{Pipeline}
+\subsection{Overall Pipeline}
 \input{sections/subsections/pipeline}
 
 \subsection{Dataset}
 \input{sections/subsections/dataset}
 
 \subsection{Bubble Segmentation}
+\subsubsection{Pipeline}
+\input{sections/subsubsections/bubble-seg-pip}
 
 \subsubsection{Data Preparation}
 \input{sections/subsubsections/data-preparation-bubble-seg}
@@ -143,6 +152,16 @@
 \input{sections/subsubsections/ocr-postproc}
 
 \subsection{Translation}
+\input{sections/subsections/translation}
+
+\subsubsection{Model architecture}
+\input{sections/subsubsections/translation-arch}
+
+\subsubsection{Model variants}
+\input{sections/subsubsections/translation-variants}
+
+\subsection{Typesetting}
+\input{sections/subsections/typeset}
 
 \subsection{Evaluation metrics}
 \subsubsection{Segmentation}
@@ -207,5 +226,5 @@
 \bibliographystyle{IEEEtran}
 \bibliography{references}
 
-
+\end{CJK*}
 \end{document}

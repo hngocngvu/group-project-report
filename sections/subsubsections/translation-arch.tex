@@ -1,0 +1,10 @@
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{img/marian.png}
+    \caption{Marian-MT architecture}
+    \label{fig:translation-arch}    
+\end{figure}
+
+The MarianMT architecture, illustrated in Figure \ref{fig:translation-arch}, follows the original Transformer design, consisting of an encoder that processes the source Japanese text and a decoder that generates the target English translation autoregressively. The encoder employs multi-head self-attention layers to capture contextual relationships within the input sequence, while the decoder uses both self-attention and cross-attention mechanisms to attend to relevant encoder representations during generation.
+
+The model utilizes SentencePiece tokenization \cite{kudo-richardson-2018-sentencepiece}, a subword segmentation approach that handles the morphologically rich nature of Japanese text by decomposing words into smaller units. This enables the model to handle rare words and out-of-vocabulary tokens effectively while maintaining a manageable vocabulary size.

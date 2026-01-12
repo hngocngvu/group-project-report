@@ -1,0 +1,7 @@
+In text detection and recognition, Hirata et al. \cite{hirata2016comics} employed an image operator learning method generating binary segmentation in pixel level. 
+Machine learning algorithms were applied to learn image operators from training images with ground truths, where windows are considered as features.
+The choice for window value is important in this task, which can lead to large generalization error. Therefore, two-level operators were born to solve the problem by using moderate size windows for training and combining resulting images.
+Later in 2018, Chu et al. \cite{chu2018text} proposed two approaches based on deep networks for text detection.
+The first approach utilized multiple CNNs for feature extraction, joined them and fed to a combination of a classification and a regression network.
+The other approach took region proposal, extracted features and classification/regression in a single deep network.
+While previous studies primarily focus on developing specific text detection or segmentation methods, Soykan et al. \cite{soykan2024comics} provide a comprehensive benchmark and evaluation framework that offers a unified perspective on comics OCR and facilitates systematic comparison across different approaches.
