@@ -1,56 +1,97 @@
-Although YOLO gives a a pixel-precise mask for every panel, it still returns \textbf{one} mask when two, three or more balloons touch or overlap. Feeding such a merged region to an OCR engine makes the text layout denser and usually causes a noticeable drop in recognition accuracy.
+Although YOLO gives a pixel-precise mask for every panel, it still returns one mask when multiple balloons touch or overlap. Feeding a merged region to an OCR engine makes the text layout denser and usually causes a noticeable drop in recognition accuracy.
 
 To address this, we introduce a post-processing step that leverages convexity defects to detect and split merged speech bubbles. The key observation is that when two bubbles are connected, the resulting contour often exhibits at least two deep concave regions — known as convexity defects. These defects serve as reliable cues for where a cut should be made.
 
-Our algorithm proceeds as follows: for each mask returned by YOLO we extract the largest external contour, compute its convex hull and identify convexity defects—points where the contour deviates markedly from its convex envelope—retaining only those that are both deep and angularly valid to suppress noise, then merge nearby defects to avoid over-segmentation; subsequently we draw a straight line between the closest pair of defects if at least two valid ones remain, whereas if only a single valid defect exists we skip the cut entirely since one defect alone does not furnish sufficient geometric evidence for a reliable split, and the entire process is applied recursively to each resulting sub-mask up to a predefined depth to handle more complex multi-bubble clusters.
+Our algorithm proceeds as described in Algorithm \ref{alg:split-bubbles1} and \ref{alg:split-bubbles2}: for each mask returned by YOLO we extract the largest external contour, compute its convex hull and identify convexity defects—points where the contour deviates remarkably from its convex envelope—retaining only those that are both deep and angularly valid to suppress noise, then merge nearby defects to avoid over-segmentation; subsequently we draw a straight line between the closest pair of defects if at least two valid ones remain, whereas if only a single valid defect exists we skip the cut entirely since one defect alone does not furnish sufficient geometric evidence for a reliable split, and the entire process is applied recursively to each resulting sub-mask up to a predefined depth to handle more complex multi-bubble clusters.
 
+% --- Part 1: SplitConnectedBubbles ---
 \begin{algorithm}[H]
-\caption{Split Merged Speech Bubbles Using Convexity Defects (Conservative)}
+\caption{Split Merged Speech Bubbles Using Convexity Defects (Part 1)}
+\label{alg:split-bubbles1}
 \begin{algorithmic}[1]
-\Procedure{SplitBubbles}{$mask$, $depth$}
-    \If{$depth \geq \text{MAX\_DEPTH}$}
-        \State \Return $[mask]$
+\State \textbf{Input:} $M$ (Binary mask of detected bubble), $depth$ (current recursion depth)
+\State \textbf{Output:} List of separated bubble masks
+
+\Function{SplitConnectedBubbles}{$M, depth$}
+    \If{$depth \geq \text{MAX\_SPLIT\_DEPTH}$}
+        \State \Return $[M]$
     \EndIf
-    \State $contour \gets \text{LargestContour}(mask)$
-    \If{$\text{Area}(contour) < 500$}
-        \State \Return $[mask]$
+    \State $sub\_masks \gets \Call{AttemptSplitOnce}{M}$
+
+    \If{$|sub\_masks| = 1$}
+        \State \Return $sub\_masks$
     \EndIf
-    \State $hull \gets \text{ConvexHull}(contour)$
-    \State $defects \gets \text{ConvexityDefects}(contour, hull)$
+    \State $result \gets \emptyset$
+    \ForAll{$sub \in sub\_masks$}
+        \State $result \gets result \cup \Call{SplitConnectedBubbles}{sub, depth + 1}$
+    \EndFor
+    \State \Return $result$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+% --- Part 2: AttemptSplitOnce ---
+\begin{algorithm}[H]
+\caption{Split Merged Speech Bubbles Using Convexity Defects (Part 2)}
+\label{alg:split-bubbles2}
+\begin{algorithmic}[1]
+\State \textbf{Input:} $M$ (Binary mask of detected bubble)
+\State \textbf{Output:} List of separated bubble masks
+
+\Function{AttemptSplitOnce}{$M$}
+    \State $contour \gets \Call{LargestContour}{M}$
+    \If{$contour = \emptyset$ \textbf{or} \Call{Area}{contour} < 500}
+        \State \Return $[M]$
+    \EndIf
+    \State $hull \gets \Call{ConvexHull}{contour}$
+    \State $defects \gets \Call{ConvexityDefects}{contour, hull}$
+    \If{$defects = \emptyset$}
+        \State \Return $[M]$
+    \EndIf
+
     \State $candidates \gets \emptyset$
-    \For{$defect \in defects$}
-        \State $(s, e, f, d) \gets defect$
+    \ForAll{$(s,e,f,d) \in defects$}
         \State $depth\_val \gets d / 256.0$
         \If{$depth\_val > \text{MIN\_DEFECT\_DEPTH}$}
-            \State $angle \gets \text{AngleBetween}(s, f, e)$
-            \If{$angle < \text{MAX\_ANGLE}$}
-                \State $candidates \gets candidates \cup \{f\}$
+            \State $\vec{v_1} \gets s - f$, $\vec{v_2} \gets e - f$
+            \State $angle \gets \arccos\left(\frac{\vec{v_1} \cdot \vec{v_2}}{|\vec{v_1}| |\vec{v_2}|}\right)$
+            \If{$angle < \text{MAX\_ANGLE\_DEG}$}
+                \State $candidates \gets candidates \cup \{(f, depth\_val)\}$
             \EndIf
         \EndIf
     \EndFor
-    \State $candidates \gets \text{ClusterAndFilter}(candidates)$
-    \State $cut\_mask \gets mask$
-    \If{$|candidates| \geq 2$}
-        \State $(p1, p2) \gets \text{ClosestPair}(candidates)$
-        \State $\text{DrawLine}(cut\_mask, p1, p2, 0, 3)$
-        \State \Return $[mask]$
+
+    \State $candidates \gets \Call{SortByDepth}{candidates, descending}$
+    \State $unique \gets \emptyset$
+    \ForAll{$c \in candidates$}
+        \If{$\forall u \in unique: \|c.point - u.point\| \geq \text{MIN\_DIST}$}
+            \State $unique \gets unique \cup \{c\}$
+        \EndIf
+    \EndFor
+
+    \State $M_{cut} \gets M$
+    \State $cut\_happened \gets false$
+    \If{$|unique| \geq 2$}
+        \State $top4 \gets$ first 4 elements of $unique$
+        \State $(p_1,p_2) \gets \Call{ClosestPair}{top4}$
+        \State \Call{DrawLine}{$M_{cut}, p_1, p_2$, color=0, thickness=3}
+        \State $cut\_happened \gets true$
     \EndIf
-    \State $sub\_masks \gets \text{ExtractContours}(cut\_mask)$
-    \If{$|sub\_masks| > 1$}
-        \State $result \gets \emptyset$
-        \For{$sub \in sub\_masks$}
-            \State $result \gets result \cup \text{SplitBubbles}(sub, depth + 1)$
+
+    \If{$cut\_happened$}
+        \State $contours_{new} \gets \Call{FindContours}{M_{cut}}$
+        \State $masks_{new} \gets \emptyset$
+        \ForAll{$c \in contours_{new}$}
+            \If{\Call{Area}{c} > 100}
+                \State $m \gets \Call{CreateMaskFrom}{c}$
+                \State $masks_{new} \gets masks_{new} \cup \{m\}$
+            \EndIf
         \EndFor
-        \State \Return $result$
-    \Else
-        \State \Return $[mask]$
+        \If{$|masks_{new}| > 1$}
+            \State \Return $masks_{new}$
+        \EndIf
     \EndIf
-\EndProcedure
+
+    \State \Return $[M]$
+\EndFunction
 \end{algorithmic}
 \end{algorithm}
-
-
-
-Where \textit{s}, \textit{e}, and \textit{f} denote the starting point, ending point, and the furthest point inside the defect, respectively. 
-The defect depth \textit{d} is calculated as the distance from point \textit{f} to the line segment connecting \textit{s} and \textit{e}, encoded as an integer.
-
