@@ -11,6 +11,8 @@ Instructions
 ```
 sudo apt install texlive-latex-recommended
 sudo apt install texlive-publishers
+sudo apt install texlive-science
+sudo apt install texlive-lang-cjk
 ```
 
 - Download LaTeX extension on VSC: LaTeX Workshop

@@ -1,7 +1,8 @@
 \label{data}
 Manga109 is a dataset compiled by Aizawa Yamasaki Matsui Laboratory, Department of Information and Communication Engineering, the Graduate School of Information Science and Technology, the University of Tokyo \cite{multimedia_aizawa_2020, mtap_matsui_2017}. This dataset consists of 109 manga volumes with their dialog and segmentation annotations, intended for use in academic research.
 
-The dataset contains 10,607 images, of which 9,916 include speech bubbles, with a total of 130,176 bubbles. Segmentation annotations are stored in in COCO-format JSON files. Bubble masks and bounding boxes are stored in RLE and [x,y,width,height] formats, correspondingly.
+The dataset contains 10,607 images, of which 9,916 include speech bubbles, with a total of 130,176 bubbles. Segmentation annotations are stored in in COCO-format JSON files. Bubble masks and bounding boxes are stored in Run-Length Encoding (RLE) and [x,y,width,height] formats, correspondingly.
+Since RLE is not suitable for model training, evaluating or result visualisation, it must be converted into polygon representations.
 In this work, only images containing annotated speech bubbles are used for model training and evaluation. The maximum number of speech bubbles in a single image is 44, and on average, each image contains approximately 13 bubbles, indicating a relatively high bubble density. The bubble distribution following COCO standard is illustrated in Figure \ref{fig:bubble_distribution}.
 
 \begin{figure}[H]

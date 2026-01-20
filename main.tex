@@ -1,5 +1,5 @@
-\documentclass[20pt]{article}
-\usepackage[a4paper, tmargin=0.75in, lmargin=0.80in, rmargin=0.80in, bmargin=1in]{geometry}
+\documentclass{article}
+\usepackage[a4paper, tmargin=1.5cm, lmargin=1.5cm, rmargin=1.5cm, bmargin=1.5cm]{geometry}
 \usepackage{hyperref}
 %\usepackage{multicol}
 \hypersetup{
@@ -11,12 +11,25 @@
 }
 %\usepackage[numbers,sort&compress]{natbib} % for a numerical citation list
 \usepackage{graphicx}
-\usepackage{amsmath}
+\usepackage{caption}
+\usepackage{subcaption} % trong preamble
 \usepackage{indentfirst}
+\usepackage[utf8]{inputenc}
+\usepackage{textcomp}
+\usepackage[T1]{fontenc}
+\usepackage{CJKutf8}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{colortbl}
 \usepackage{lmodern}
 \usepackage{float}
 \usepackage{booktabs}
 \usepackage{tikz}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{amsmath,amssymb} 
+
 \usetikzlibrary{positioning, arrows.meta, calc}
 
 \usepackage{fancyhdr}
@@ -37,6 +50,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
+\begin{CJK*}{UTF8}{gbsn}
 \pagenumbering{arabic}
 
 \begin{titlepage}
@@ -68,6 +82,11 @@
 
 \end{titlepage}
 
+\newpage 
+\addtocontents{toc}{\protect\setcounter{tocdepth}{-1}}
+\section*{Acknowledgements}
+\addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
+
 \clearpage
 \thispagestyle{empty}
 \tableofcontents
@@ -75,82 +94,131 @@
 
 
 \newpage
-\section{Acknowledgements}
-\section{Abstract}
+\addtocontents{toc}{\protect\setcounter{tocdepth}{-1}}
+\centering 
+\section*{Abstract}
+\addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
+\input{sections/abstract}
 
+\raggedright
+\setlength{\parindent}{1.5em}
 \section{Introduction}
 \input{sections/introduction}
 
-\section{Motivation}
-\input{sections/motivation}
-
 \section{Literature Review}
 \input{sections/literature-review}
+\subsection{Speech Bubble Segmentation}
+\input{sections/subsections/bubble-lr}
+\subsection{Optical Character Recognition (OCR)}
+\input{sections/subsections/ocr-lr}
+\subsection{Machine Translation}
+\input{sections/subsections/translation-lr}
+\subsection{Typesetting}
+\input{sections/subsections/typesetting-lr}
 
 \section{Methodology}
-\subsection{Pipeline}
+\subsection{Overall Pipeline}
 \input{sections/subsections/pipeline}
 
 \subsection{Dataset}
 \input{sections/subsections/dataset}
 
 \subsection{Bubble Segmentation}
+\subsubsection{Pipeline}
+\input{sections/subsubsections/bubble-seg-pip}
 
 \subsubsection{Data Preparation}
 \input{sections/subsubsections/data-preparation-bubble-seg}
 
 \subsubsection{YOLO Segmentation architecture}
+\input{sections/subsubsections/yolo-architecture}
 
 \subsubsection{Model Training}
 \input{sections/subsubsections/model-training}
 
 \subsubsection{Post-processing for speech bubbles}
+\input{sections/subsubsections/post-yolo}
 
 \subsection{Optical Character Recognition (OCR)}
-\subsubsection{Dataset Collection}
+\input{sections/subsections/ocr}
+
+\subsubsection{Model architecture}
+\input{sections/subsubsections/ocr-arch}
+
+\subsubsection{Inference algorithm}
+\input{sections/subsubsections/ocr-inf}
+
+\subsubsection{Post-processing for OCR results}
+\input{sections/subsubsections/ocr-postproc}
 
 \subsection{Translation}
+\input{sections/subsections/translation}
+
+\subsubsection{Model architecture}
+\input{sections/subsubsections/translation-arch}
+
+\subsubsection{Model variants}
+\input{sections/subsubsections/translation-variants}
+
+\subsection{Typesetting}
+\input{sections/subsections/typeset}
 
 \subsection{Evaluation metrics}
 \subsubsection{Segmentation}
 \input{sections/subsubsections/segmentation-eval-met}
+
 \subsubsection{NLP metrics}
+\input{sections/subsubsections/nlp-metrics}
 
 \section{Results and Evaluation}
 \subsection{Bubble Segmentation}
 \input{sections/subsections/bubble-seg-res.tex}
 
 \subsection{OCR}
+\input{sections/subsubsections/ocr-results.tex}
+
 \subsection{Translation}
 
 \section{Desktop Application}
 \input{sections/desktop-application.tex}
 
 \subsection{Architecture Overview}
-\input{sections/subsections/architecture-overview.tex}
+\input{sections/subsections/architecture-overview}
 
-\subsection{Use Case Description} 
+\subsection{Use Case Specification} 
+\input{sections/subsections/ucd}
+
+\subsubsection{UC\_01: Manage image size}
+\input{sections/subsubsections/uc-01}
+\subsubsection{UC\_02: Segment bubbles}
+\input{sections/subsubsections/uc-02}
+\subsubsection{UC\_03: Recognize texts}
+\input{sections/subsubsections/uc-03}
+\subsubsection{UC\_04: Translate texts}
+\input{sections/subsubsections/uc-04}
+\subsubsection{UC\_05: Replace translated texts}
+\input{sections/subsubsections/uc-05}
 
 \subsection{Core Data Structures}
-\input{sections/subsections/core-data-structures.tex}
+\input{sections/subsections/core-ds}
 
-\subsection{Functional Modules}
-\input{sections/subsections/functional-modules.tex}
+\subsection{Functional Components}
+\input{sections/subsections/functional-modules}
 
 \subsubsection{Segmentation Module}
-\input{sections/subsubsections/segmentation-module.tex}
+\input{sections/subsubsections/segmentation-module}
 
 \subsubsection{OCR Module}
-\input{sections/subsubsections/ocr-module.tex}
+\input{sections/subsubsections/ocr-module}
 
 \subsubsection{Machine Translation Module}
-\input{sections/subsubsections/machine-translation-module.tex}
+\input{sections/subsubsections/machine-trans-module}
 
 \subsubsection{Typesetting Module}
-\input{sections/subsubsections/typesetting-module.tex}
+\input{sections/subsubsections/typesetter-module}
 
 \subsection{Exception Handling}
-\input{sections/subsections/exception-handling.tex}
+\input{sections/subsections/exception}
 
 \section{Limitations and Future Works}
 \section{Conclusion}
@@ -160,5 +228,5 @@
 \bibliographystyle{IEEEtran}
 \bibliography{references}
 
-
+\end{CJK*}
 \end{document}
