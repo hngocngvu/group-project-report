@@ -1,0 +1,11 @@
+Layout analysis and reading order estimation are fundamental to comic understanding.
+These topics have attracted considerable research attention, as evidenced by several publications in the literature.
+In 2012, Ngo et al. \cite{ngo2012panel} emphasized how graphic elements such as panels and speech balloons affected to full text indexing, therefore, 
+proposed a region-based and morphology-based method to extract panels in a comic page. 
+Two years later, Pang et al. \cite{pang2014robust} presented a robust method for panel extraction in comics by first closing open panels and identifying background masks.
+The panel block is then recursively splitted the panel into sub-blocks from which panel shapes are recovered.
+In 2019, Nguyen et al. \cite{nguyen2019comic} had a different approach by considering panel extraction in image segmentation task.
+They adopted U-Net architecture to perform multiclass classification for each pixel, whether it belongs to the background, panels or borders.
+In 2022, Omori et al. \cite{omori2022comic} proposed algorithms to estimate the reading order of comic frames by sorting and finding rightmost or topmost frame. 
+If it exists, the first frame will be chosen according to its position in the sorted list of frames.
+If there is no topmost or rightmost frame, the first frame in the sorted output will be considered as the first.

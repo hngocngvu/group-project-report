@@ -18,22 +18,22 @@
     % Change width/height here to control size
     % -----------------------------------------------------------
     \newcommand{\img}[1]{%
-        \includegraphics[width=2cm, height=3cm, keepaspectratio]{#1}%
+        \includegraphics[width=1.5cm, height=2cm, keepaspectratio]{#1}%
     }
     
     % --- LEFT COLUMN ---
     \node[picnode] (img1) {\includegraphics[width=4.5cm]{img/1.png}};
-    \node[picnode, below=of img1] (img2) {\includegraphics[width=4.5cm]{img/2.png}};
-    \node[picnode, below=of img2] (img3) {\includegraphics[width=4.5cm]{img/3.png}};
+    \node[picnode, below=of img1] (img2) {\includegraphics[width=4cm]{img/2.png}};
+    \node[picnode, below=of img2] (img3) {\includegraphics[width=4cm]{img/3.png}};
     % --- RIGHT COLUMN ---
     % Place Image 5 to the right of Image 1
-    \node[picnode, right=of img1] (img5) {\includegraphics[width=4.5cm]{img/5.png}};
+    \node[picnode, right=of img1] (img5) {\includegraphics[width=4cm]{img/5.png}};
     
     % Place Image 4 to the right of Image 3
-    \node[picnode, right=of img3] (img4) {\includegraphics[width=4.5cm]{img/6.png}};
+    \node[picnode, right=of img3] (img4) {\includegraphics[width=4cm]{img/6.png}};
 
     % Place Image 6 
-    \node[picnode, below=of img5] (img6) {\includegraphics[width=4.5cm]{img/4.png}};
+    \node[picnode, below=of img5] (img6) {\includegraphics[width=4cm]{img/4.png}};
 
     % -----------------------------------------------------------
     % 3. Draw Arrows
