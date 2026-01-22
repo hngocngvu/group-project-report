@@ -6,3 +6,4 @@
 *.pdf
 *.toc
 #/img 
+*.fdb_latexmk
