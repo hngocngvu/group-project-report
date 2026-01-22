@@ -1,0 +1,20 @@
+The OCR pipeline processes segmented speech bubble regions through a systematic sequence of extraction, recognition, and refinement operations to convert visual Japanese text into machine-readable characters, as illustrated in Figure \ref{fig:ocr_pipeline}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{img/ocr_pipeline.png}
+    \caption{OCR Pipeline}
+    \label{fig:ocr_pipeline}
+\end{figure}
+
+\textbf{Stage 1: Text Region Detection and Extraction}
+
+The pipeline receives as input the full manga page with text regions detected and isolated following the convex defect splitting procedure. For each detected speech bubble, we extract the corresponding bounding box coordinates and crop the region from the original image, thereby isolating individual text-bearing areas for independent processing.
+
+\textbf{Stage 2: MangaOCR Recognition}
+
+Each cropped bubble region is passed through the MangaOCR model, which performs character-level recognition of vertical Japanese text. The model leverages its vision encoder-decoder architecture to generate sequential character predictions, producing raw text output for each bubble region.
+
+\textbf{Stage 3: Post-Processing Refinement}
+
+The raw OCR output undergoes three sequential post-processing techniques to enhance text quality and correct common recognition errors. These refinement operations address character-level mistakes, normalize spacing and punctuation, and apply linguistic corrections to improve the overall accuracy of the recognized text before it is passed to the translation module.
