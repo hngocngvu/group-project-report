@@ -1,3 +1,5 @@
+Speech balloon segmentation is a fundamental step in manga translation pipelines, as it localizes dialogue regions and defines the basic units for subsequent OCR and translation.
+Despite its importance, the number of dedicated studies on speech balloon segmentation remains relatively limited. 
 Early in 2013, Rigaud et al. \cite{Rigaud2013ActiveContour} detailed a speech balloon detection method using active contour framework. Edge-based image features and text localization were combined to guide the evolution of contours towards speech balloon boundaries.
 Two years later,  Rigaud et al. \cite{rigaud2017textindependent} proposed an adaptive thresholding method to binarize grayscale images and extract connected components, identifying speech balloons based on their content topology and alignment. In 2019, Dubray and Laubrock \cite{dubray2019deepcnn} employed a deep convolutional network with a U-Net architecture and a pre-trained VGG-16 encoder to segment speech balloons in comics. 
 Later, Melista et al. (2021) \cite{melistas2021deep} combined Faster R-CNN for balloon bounding box detection with U-Net for pixel-level segmentation of speech balloons.
