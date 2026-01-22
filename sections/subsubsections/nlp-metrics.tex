@@ -38,12 +38,12 @@ For OCR evaluation, we use Character Error Rate (CER) and Word Error Rate (WER) 
 
 \subsubsection{Translation Metrics}
 
-For Japanese-to-English translation evaluation, we use COMETScore and BERTScore as the primary metrics, with chrF and chrF++ as additional metrics for reference.
+For Japanese-to-English translation evaluation, we use COMETScore \cite{rei2022comet} and BERTScore \cite{zhang2020bertscore} as the primary metrics, with chrF \cite{popovic2015chrf} and chrF++ \cite{popovic2017chrf++} as additional metrics for reference.
 
 \begin{enumerate}
     \item \textbf{COMETScore}
 
-    COMET (Crosslingual Optimized Metric for Evaluation of Translation) is a neural-based metric that leverages pre-trained multilingual language models to evaluate translation quality. Unlike traditional n-gram-based metrics, COMET learns to predict human judgments by fine-tuning on human evaluation datasets. We use COMET-22 (wmt22-comet-da), the Direct Assessment model from WMT 2022 \cite{rei2022comet}.
+    COMET (Crosslingual Optimized Metric for Evaluation of Translation) is a neural-based metric that leverages pre-trained multilingual language models to evaluate translation quality. Unlike traditional n-gram-based metrics, COMET learns to predict human judgments by fine-tuning on human evaluation datasets. We use COMET-22 (wmt22-comet-da), the Direct Assessment model from WMT 2022.
 
     \begin{equation}
         COMET = f_\theta(src, hyp, ref)
@@ -61,7 +61,7 @@ For Japanese-to-English translation evaluation, we use COMETScore and BERTScore 
 
     \item \textbf{BERTScore}
 
-    BERTScore leverages pre-trained contextual embeddings from BERT to compute similarity between candidate and reference translations \cite{zhang2020bertscore}. Instead of exact n-gram matching, it computes semantic similarity at the token level. We use the DeBERTa-xlarge-mnli (microsoft/deberta-xlarge-mnli) backbone, which is the gold standard recommended model for BERTScore.
+    BERTScore leverages pre-trained contextual embeddings from BERT to compute similarity between candidate and reference translations. Instead of exact n-gram matching, it computes semantic similarity at the token level. We use the DeBERTa-xlarge-mnli (microsoft/deberta-xlarge-mnli) backbone, which is the gold standard recommended model for BERTScore.
 
     \begin{equation}
         BERTScore_F = \frac{2 \cdot P_{BERT} \cdot R_{BERT}}{P_{BERT} + R_{BERT}}
@@ -77,7 +77,7 @@ For Japanese-to-English translation evaluation, we use COMETScore and BERTScore 
 
     \item \textbf{Character n-gram F-score (chrF and chrF++)}
 
-    The Character n-gram F-score (chrF) \cite{popovic2015chrf} is an evaluation metric that assesses the quality of machine translation by calculating the F-score of character n-gram overlaps between the hypothesis and the reference. Unlike word-level metrics, chrF works at the character level, making it particularly robust for morphologically rich languages and less sensitive to tokenization errors.
+    The Character n-gram F-score (chrF) is an evaluation metric that assesses the quality of machine translation by calculating the F-score of character n-gram overlaps between the hypothesis and the reference. Unlike word-level metrics, chrF works at the character level, making it particularly robust for morphologically rich languages and less sensitive to tokenization errors.
 
     \begin{equation}
         chrF = \frac{(1 + \beta^2) \cdot chrP \cdot chrR}{\beta^2 \cdot chrP + chrR}
@@ -87,6 +87,6 @@ For Japanese-to-English translation evaluation, we use COMETScore and BERTScore 
     \begin{itemize}
         \item chrP (Character Precision): the percentage of character n-grams in the system output that are also present in the reference
         \item chrR (Character Recall): the percentage of character n-grams in the reference that are present in the system output
-        \item $\beta$: controls the weight given to recall versus precision; typically $\beta=2$ is used (called chrF++ \cite{popovic2017chrf++}) to emphasize recall
+        \item $\beta$: controls the weight given to recall versus precision; typically $\beta=2$ is used (called chrF++) to emphasize recall
     \end{itemize}
 \end{enumerate}

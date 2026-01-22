@@ -12,8 +12,8 @@ The architecture of the Manga-OCR model is illustrated in Figure \ref{fig:manga-
 The model follows a \textbf{Vision Encoder-Decoder} architecture with approximately 115 million parameters:
 
 \begin{enumerate}
-    \item \textbf{Vision Encoder (ViT):} The backbone is a Data-efficient Image Transformer (DeiT-Tiny). It processes the input image $I$ by splitting it into fixed-size patches of $16 \times 16$ pixels. These patches are linearly projected into embedding vectors and processed via Multi-Head Self-Attention (MSA) to capture global spatial dependencies. 
-    \item \textbf{Text Decoder (BERT):} The decoder is a Japanese character-level BERT model adapted for autoregressive generation. Crucially, it employs a \textbf{Cross-Attention} mechanism connecting the visual features $H_{\text{enc}}$ to the text hidden states $H_{\text{dec}}$. The attention weights determine which visual patches are relevant for the current character being generated:
+    \item \textbf{Vision Encoder (ViT):} The backbone is a Data-efficient Image Transformer (DeiT-Tiny) \cite{touvron2021deit}. It processes the input image $I$ by splitting it into fixed-size patches of $16 \times 16$ pixels. These patches are linearly projected into embedding vectors and processed via Multi-Head Self-Attention (MSA) to capture global spatial dependencies. 
+    \item \textbf{Text Decoder (BERT):} The decoder is a Japanese character-level BERT model \cite{devlin2018bert} adapted for autoregressive generation. Crucially, it employs a \textbf{Cross-Attention} mechanism connecting the visual features $H_{\text{enc}}$ to the text hidden states $H_{\text{dec}}$. The attention weights determine which visual patches are relevant for the current character being generated:
     \begin{equation}
         Q = H_{\text{dec}} W_Q, \quad K = H_{\text{enc}} W_K, \quad V = H_{\text{enc}} W_V
     \end{equation}
