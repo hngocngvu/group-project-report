@@ -1,5 +1,5 @@
 Table \ref{tab:yolo-det-per} and Table \ref{tab:yolo-seg-per} illustrate bounding box and instance mask segmentation of four YOLO models: YOLOv8s, YOLOv8n, YOLOv11s, YOLOv11n.
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \begin{tabular}{lcccc}
 \toprule
@@ -17,7 +17,7 @@ mAP50-95 & 0.97 & 0.974 & \textbf{0.979} & 0.975\\
 
 \vspace{0.5cm}
 
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \begin{tabular}{lcccc}
 \toprule
@@ -33,9 +33,22 @@ mAP50-95 & 0.916 & \textbf{0.922} & 0.92 & 0.921\\
 \label{tab:yolo-seg-per}
 \end{table}
 
+\vspace{0.5cm}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lccc}
+\toprule
+Method\ /Metrics & Ngo et al. (2012) \cite{ngo2012panel} & Rigaud et al. (2017) \cite{rigaud2017textindependent} & Dubray et al. (2019) \cite{dubray2019deepcnn} \\
+\midrule
+Precision & 0.9467 & 0.6227 & 0.9558 \\
+Recall & 0.7553  & 0.6292 & 0.9404\\
+\bottomrule
+\end{tabular}
+\caption{Bubble mask segmentation performance of other methods}
+\label{tab:pub-res}
+\end{table}
+
 The results indicate that all four models achieve comparable performance, but overall, YOLOv8s demonstrates the most balanced and consistent performance across both bounding box detection and instance mask segmentation tasks.
-
-% compare with existing papers, không ổn vì metrics khác, hỏi thầy về cái này sau
-
-
-
+Although our modern segmentation models show stronger performance than the methods reported in Table \ref{tab:pub-res}, this comparison should be interpreted with caution, 
+as the evaluated methods are trained and tested on different datasets and target different segmentation objectives.
