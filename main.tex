@@ -86,14 +86,12 @@
 
 \addtocontents{toc}{\protect\setcounter{tocdepth}{-1}}
 \section*{List of Abbreviations}
-\vspace{2em}
+\vspace{0.6em}
 \addtocontents{toc}{\protect\setcounter{tocdepth}{3}}
 \begin{table}[H]
     \centering
     \large 
     \begin{tabular}{ll}
-        AP & Average Precision \\
-        \\
         BERT & Bidirectional Encoder Representations from Transformers \\
         \\
         BLEU & Bilingual Evaluation Understudy \\
@@ -106,17 +104,7 @@
         \\
         COMET & Crosslingual Optimized Metric for Evaluation of Translation \\
         \\
-        DeBERTa & Decoding-enhanced BERT with Disentangled Attention \\
-        \\
-        DeiT & Data-efficient Image Transformer \\
-        \\
         ELAN & Efficient Layer Aggregation Networks\\
-        \\
-        FN & False Negatives \\
-        \\
-        FP & False Positives \\
-        \\
-        FPN & Feature Pyramid Network \\
         \\
         IoU & Intersection over Union \\
         \\
@@ -124,23 +112,13 @@
         \\
         mAP & mean Average Precision \\
         \\
-        MSA & Multi-Head Self-Attention \\
-        \\
         MT & Machine Translation \\
         \\
         NLP & Natural Language Processing \\
         \\
         OCR & Optical Character Recognition \\
         \\
-        PAN & Path Aggregation Network \\
-        \\
-        RoBERTa & Robustly Optimized BERT Pretraining Approach \\
-        \\
-        TP & True Positives \\
-        \\
         UC & Use Case\\
-        \\
-        ViT & Vision Transformer \\
     \end{tabular}
 \end{table}
 
@@ -249,16 +227,12 @@
 \subsection{Use Case Specification} 
 \input{sections/subsections/ucd}
 
-\subsubsection{UC\_01: Manage image size}
+\subsubsection{UC\_01: Segment speech bubbles}
 \input{sections/subsubsections/uc-01}
-\subsubsection{UC\_02: Segment bubbles}
+\subsubsection{UC\_02: Recognize texts}
 \input{sections/subsubsections/uc-02}
-\subsubsection{UC\_03: Recognize texts}
+\subsubsection{UC\_03: Translate texts}
 \input{sections/subsubsections/uc-03}
-\subsubsection{UC\_04: Translate texts}
-\input{sections/subsubsections/uc-04}
-\subsubsection{UC\_05: Replace translated texts}
-\input{sections/subsubsections/uc-05}
 
 \subsection{Core Data Structures}
 \input{sections/subsections/core-ds}

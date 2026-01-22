@@ -1,7 +1,8 @@
-For OCR evaluation, we use Character Error Rate (CER) and Word Error Rate (WER) as the primary metrics.
+For OCR evaluation, we use Character Error Rate (CER) and Word Error Rate (WER) as the primary metrics.\\
+\vspace{2em}
 
-\begin{enumerate}
-    \item \textbf{Character Error Rate (CER)}
+
+\textbf{Character Error Rate (CER)}
 
     CER is derived as the Levenshtein distance from the predicted text and the reference text divided by total number of characters in the reference text, the metric is formulated as follow:
 
@@ -9,15 +10,12 @@ For OCR evaluation, we use Character Error Rate (CER) and Word Error Rate (WER) 
         CER = \frac{S + D + I}{N}
     \end{equation}
 
-    Where:
-    \begin{itemize}
-        \item S (Substitution): the number of characters incorrectly recognized as different characters
-        \item D (Deletion): the number of characters present in the reference but missing in the prediction
-        \item I (Insertion): the number of extra characters present in the prediction but not in the reference
-        \item N: the \textbf{total number of characters} in the reference text
-    \end{itemize}
+    Where S (Substitution) stands for the number of characters incorrectly recognized as different characters, D (Deletion) is the number of characters present in the reference but missing in the prediction,
+I (Insertion) is the number of extra characters present in the prediction but not in the reference
+and N defines the \textbf{total number of characters} in the reference text.\\
+\vspace{2em}
 
-    \item \textbf{Word Error Rate (WER)}
+\textbf{Word Error Rate (WER)}
 
     WER is widely used to evaluate the accuracy of transcription systems. It is derived as the Levenshtein distance from the predicted text and the reference text divided by total number of words in the reference text, the metric is formulated as follow:
 
@@ -25,12 +23,8 @@ For OCR evaluation, we use Character Error Rate (CER) and Word Error Rate (WER) 
         WER = \frac{S + D + I}{N}
     \end{equation}
 
-    Where:
-    \begin{itemize}
-        \item S (Substitution): the number of words incorrectly recognized as different words
-        \item D (Deletion): the number of words present in the reference but missing in the prediction
-        \item I (Insertion): the number of extra words present in the prediction but not in the reference
-        \item N: the \textbf{total number of words} in the reference text
-    \end{itemize}
-\end{enumerate}
+    Where S (Substitution) is the number of words incorrectly recognized as different words,
+D (Deletion) is the number of words present in the reference but missing in the prediction, 
+I (Insertion) stands for the number of extra words present in the prediction but not in the reference
+and N defines the \textbf{total number of words} in the reference text.
 

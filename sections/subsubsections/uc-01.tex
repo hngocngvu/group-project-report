@@ -2,22 +2,25 @@
     \centering
     \begin{tabular}{|l|l|}
         \hline
-        \textbf{Adjust image view} & \\
+        \textbf{Segment speech bubbles} & \\
         \hline
-        \textbf{Actors} & User\\
+        \textbf{Actors} & System\\
         \hline
-        \textbf{Description} & User can adjust the image view by zooming in, zooming out, or fitting \\
-         & the image to the available display space. \\
+        \textbf{Description} & System automatically detects, segments and splits speech bubbles from \\
+        & the input image.\\
         \hline
         \textbf{Data} & An input image\\
         \hline
-        \textbf{Stimuli} & User selects to zoom in, zoom out or fit the image to space.\\
+        \textbf{Stimuli} & User drags the image into queue.\\
         \hline
-        \textbf{Response} & The system updates the image display according to the user selection.\\
+        \textbf{Response} & The system processes the input image and \\
+        & displays the image with segmented speech bubbles.\\
         \hline
-        \textbf{Pre-conditions} & An image is opened and displayed.\\
+        \textbf{Pre-conditions} & An image is dragged into the queue.\\
+        & Segmentation model is loaded.\\
         \hline
-        \textbf{Post-conditions} & The image view is updated.\\
+        \textbf{Post-conditions} & The image is displayed with bounded speech bubbles.\\
+        & System performs text recognition.\\
         \hline
     \end{tabular}
 \end{table}
