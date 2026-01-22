@@ -12,14 +12,17 @@ The architecture of the Manga-OCR model is illustrated in Figure \ref{fig:manga-
 The model follows a \textbf{Vision Encoder-Decoder} architecture with approximately 115 million parameters:
 
 \begin{enumerate}
-    \item \textbf{Vision Encoder (ViT):} The backbone is a Data-efficient Image Transformer (DeiT-Tiny) \cite{touvron2021deit}. It processes the input image $I$ by splitting it into fixed-size patches of $16 \times 16$ pixels. These patches are linearly projected into embedding vectors and processed via Multi-Head Self-Attention (MSA) to capture global spatial dependencies. 
-    \item \textbf{Text Decoder (BERT):} The decoder is a Japanese character-level BERT model \cite{devlin2018bert} adapted for autoregressive generation. Crucially, it employs a \textbf{Cross-Attention} mechanism connecting the visual features $H_{\text{enc}}$ to the text hidden states $H_{\text{dec}}$. The attention weights determine which visual patches are relevant for the current character being generated:
+    \item \textbf{Vision Encoder (ViT):} The backbone is a Data-efficient Image Transformer (DeiT-Tiny) \cite{touvron2021deit} with 12 layers. It processes the input manga bubble image (224$\times$224 pixels) by first splitting it into 196 non-overlapping patches of $16 \times 16$ pixels each. Each patch is converted into a 768-dimensional embedding vector and augmented with positional information to preserve spatial relationships. The patch sequence then passes through 12 Transformer encoder layers, where Multi-Head Self-Attention (MSA) mechanisms capture both local character strokes and global text layout patterns. The output is a set of visual features $H_{\text{enc}}$ that encode the entire image content.
+    
+    \item \textbf{Text Decoder (BERT):} The decoder is a Japanese character-level BERT model \cite{devlin2018bert} adapted for autoregressive text generation. It generates characters one at a time by processing previously generated text (context tokens) through masked self-attention layers, ensuring each prediction only depends on prior characters. The decoder's key innovation is the \textbf{Cross-Attention} mechanism, which connects visual features $H_{\text{enc}}$ from the encoder to the text generation process in $H_{\text{dec}}$. This mechanism allows the model to focus on relevant parts of the image---such as specific character strokes---when predicting each character. The attention operation is computed as:
     \begin{equation}
         Q = H_{\text{dec}} W_Q, \quad K = H_{\text{enc}} W_K, \quad V = H_{\text{enc}} W_V
     \end{equation}
     \begin{equation}
         \text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
     \end{equation}
+    
+    After cross-attention integrates visual information with textual context, the final hidden state passes through a linear projection (LM Head) that maps to the vocabulary of 4,718 Japanese characters, followed by softmax to produce probability distributions over the next character.
 \end{enumerate}
 
 where $Q$ (Query) denotes the textual context from decoder states $H_{\text{dec}}$;
