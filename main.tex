@@ -29,6 +29,8 @@
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage{amsmath,amssymb} 
+\usepackage{placeins}
+
 
 \usetikzlibrary{positioning, arrows.meta, calc}
 
@@ -82,14 +84,12 @@
 
 \end{titlepage}
 
-\newpage 
 \addtocontents{toc}{\protect\setcounter{tocdepth}{-1}}
 \section*{List of Abbreviations}
+\vspace{2em}
 \addtocontents{toc}{\protect\setcounter{tocdepth}{3}}
-\begin{table}[H]
-    \centering
-    \large 
-    \begin{tabular}{ll}
+\begin{center}
+\begin{tabular}{@{}ll@{}}
         AP & Average Precision \\
         \\
         BERT & Bidirectional Encoder Representations from Transformers \\
@@ -98,9 +98,9 @@
         \\
         CER & Character Error Rate \\
         \\
-        CNN & & Convolutional Neural Network \\
+        CNN & Convolutional Neural Network \\
         \\
-        COCO & & Common Objects in Context \\
+        COCO & Common Objects in Context \\
         \\
         COMET & Crosslingual Optimized Metric for Evaluation of Translation \\
         \\
@@ -136,24 +136,22 @@
         \\
         TP & True Positives \\
         \\
-        UC & & Use Case\\
+        UC & Use Case\\
         \\
         ViT & Vision Transformer \\
-    \end{tabular}
-\end{table}
+\end{tabular}
+\end{center}
 
 \newpage
-\thispagestyle{empty}
 \tableofcontents
-\clearpage
-
 
 \newpage
 \addtocontents{toc}{\protect\setcounter{tocdepth}{-1}}
-\centering 
+{\centering
 \section*{Abstract}
-\addtocontents{toc}{\protect\setcounter{tocdepth}{3}}
 \input{sections/abstract}
+}
+\addtocontents{toc}{\protect\setcounter{tocdepth}{3}}
 
 \raggedright
 \setlength{\parindent}{1.5em}
@@ -171,6 +169,7 @@
 \subsection{Machine Translation and Typesetting}
 \input{sections/subsections/translation-lr}
 
+\FloatBarrier
 \section{Methodology}
 \subsection{Overall Pipeline}
 \input{sections/subsections/pipeline}
@@ -225,10 +224,14 @@
 \subsubsection{Segmentation}
 \input{sections/subsubsections/segmentation-eval-met}
 
-\subsubsection{Natural Language Processing metrics}
+\subsubsection{OCR metrics}
 \input{sections/subsubsections/nlp-metrics}
 
+\subsubsection{Translation metrics}
+\input{sections/subsubsections/trans-eval-met}
+
 \section{Results and Evaluation}
+
 \subsection{Bubble Segmentation}
 \input{sections/subsections/bubble-seg-res.tex}
 
@@ -277,6 +280,7 @@
 \input{sections/subsections/exception}
 
 \section{Limitations and Future Works}
+
 \section{Conclusion}
 
 \section*{Acknowledgements}

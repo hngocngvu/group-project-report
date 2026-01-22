@@ -2,7 +2,7 @@ To evaluate the OCR module, we tested the model on a subset of 640 speech bubble
 
 The step-wise breakdown reveals that \textbf{Unicode Normalization} provided the largest single gain (reducing CER by $\approx$ 2.2\%) by correcting the model's tendency to generate full-width alphanumeric characters. Subsequently, \textbf{Punctuation Standardization} further reduced error rates by unifying inconsistent ellipsis styles, confirming that a significant portion of raw errors were formatting artifacts rather than recognition failures.
 
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \caption{Impact of post-processing operations on OCR performance}
 \label{tab:ocr_results}
