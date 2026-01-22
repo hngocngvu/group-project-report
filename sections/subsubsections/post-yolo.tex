@@ -4,6 +4,27 @@ To address this, we introduce a post-processing step that leverages convexity de
 
 Our algorithm proceeds as described in Algorithm \ref{alg:split-bubbles1} and \ref{alg:split-bubbles2}: for each mask returned by YOLO we extract the largest external contour, compute its convex hull and identify convexity defects—points where the contour deviates remarkably from its convex envelope—retaining only those that are both deep and angularly valid to suppress noise, then merge nearby defects to avoid over-segmentation; subsequently we draw a straight line between the closest pair of defects if at least two valid ones remain, whereas if only a single valid defect exists we skip the cut entirely since one defect alone does not furnish sufficient geometric evidence for a reliable split, and the entire process is applied recursively to each resulting sub-mask up to a predefined depth to handle more complex multi-bubble clusters.
 
+The splitting procedure operates in two tightly-coupled functions. \texttt{SplitConnectedBubbles} serves as the recursive driver: it invokes \texttt{AttemptSplitOnce} on the input mask and, if more than one sub-mask is returned, recursively processes each fragment until the maximum recursion depth is reached. \texttt{AttemptSplitOnce} encapsulates the core geometric logic. It first extracts the largest contour and computes its convex hull. Using OpenCV's \texttt{convexityDefects}, it identifies points where the contour bends inward significantly. Each defect is characterized by four values: the start point $s$, end point $e$, farthest point $f$, and depth $d$. We retain only defects whose depth exceeds \texttt{MIN\_DEFECT\_DEPTH} (13 pixels) and whose interior angle---computed via the dot product of vectors $\vec{v_1} = s - f$ and $\vec{v_2} = e - f$---is less than \texttt{MAX\_ANGLE\_DEG} (170°). This angular constraint filters out shallow, wide concavities that are unlikely to represent merge boundaries.
+
+After collecting candidates, we cluster them by sorting in descending order of depth and discarding any candidate within \texttt{MIN\_DIST} (20 pixels) of a previously retained one. If at least two unique defects remain, we select the closest pair from the top four deepest candidates and draw a black line between them, effectively severing the mask. Only when the cut produces multiple connected components with area greater than 100 pixels do we accept the split; otherwise, the original mask is returned unchanged. The recursion limit of 2 prevents excessive fragmentation while still handling typical two- or three-bubble clusters observed in manga panels.
+
+\begin{table}[H]
+\centering
+\caption{Post-processing Parameters for Bubble Splitting}
+\label{tab:bubble-split-params}
+\begin{tabular}{lll}
+\toprule
+\textbf{Parameter} & \textbf{Value} & \textbf{Rationale} \\
+\midrule
+MIN\_DEFECT\_DEPTH & 13 px & Minimum depth of a defect to be considered \\
+MAX\_ANGLE\_DEG & 170° & Maximum angle of a defect to be considered \\
+MIN\_DIST & 20 px & Minimum distance between two defects to be considered \\
+MIN\_AREA & 100 px$^2$ & Minimum area of a connected component to be considered \\
+MAX\_RECURSION & 2 & Maximum recursion depth \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 % --- Part 1: SplitConnectedBubbles ---
 \begin{algorithm}[H]
 \caption{Split Merged Speech Bubbles Using Convexity Defects (Part 1)}
