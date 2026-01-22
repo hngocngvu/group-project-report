@@ -1,0 +1,78 @@
+Preserving the correct reading order is critical for the translation to be coherent. Japanese manga follows a specific Right-to-Left (RTL), Top-to-Bottom flow that differs from Western comics. We propose a hierarchical layout analysis pipeline that structures the unstructured bubble detections into a linear narrative sequence.
+
+\subsubsection{Double-page Processing}
+
+Standard manga processing pipelines often fail on double-page spreads (two facing pages scanned as a single image), as the layout analysis algorithms assume a single flow of panels. We address this by detecting spreads via aspect ratio analysis. If the image width dominates the height ($W/H > 1.0$), we trigger a specialized split-processing routine.
+
+The image is split vertically at $x_{\text{mid}} = W/2$ into two sub-images: the Right Page ($I_R$) and the Left Page ($I_L$). In adherence to the Japanese reading direction, $I_R$ represents the earlier page in the narrative sequence and is processed first.
+
+After independent segmentation inference on $I_R$ and $I_L$, the results must be mapped back to the original full-page coordinate system.
+\begin{itemize}
+    \item \textbf{Bounding Box Reprojection:}
+    \begin{itemize}
+        \item For the Left Page ($I_L$), coordinates remain unchanged: $B_{\text{global}} = B_{\text{local}}$.
+        \item For the Right Page ($I_R$), we apply a horizontal offset to map the "local" coordinates back to the right half of the canvas:
+        \begin{equation}
+             x_{\text{global}} = x_{\text{local}} + x_{\text{mid}} 
+        \end{equation}
+    \end{itemize}
+
+    \item \textbf{Mask Reconstruction:} The instance masks returned by the model correspond to the dimensions of the sub-images. To reconstruct the full-page masks, we initialize a zero-filled canvas of size $W \times H$ for each detection. The local mask is then embedded into the canvas at the corresponding ROI (Region of Interest):
+    \begin{itemize}
+        \item $M_{\text{global}}[y, 0:x_{\text{mid}}] = M_{\text{local}}$ (Left Page)
+        \item $M_{\text{global}}[y, x_{\text{mid}}:W] = M_{\text{local}}$ (Right Page)
+    \end{itemize}
+\end{itemize}
+
+Finally, the lists are concatenated in the order $[L_{\text{right}}, L_{\text{left}}]$ to ensure the reading order flows correctly from the first page (right) to the second (left).
+
+\subsubsection{Hierarchical Ordering}
+
+The ordering process operates on two levels: Panel-level and Bubble-level.
+\begin{itemize}
+    \item \textbf{Panel Ordering:} We divide the page vertically into logical rows. Panels are assigned to rows based on their vertical center coordinates. Rows are processed top-to-bottom, and within each row, panels are sorted right-to-left.
+    \item \textbf{Bubble Assignment:} Each speech bubble is assigned to a panel if its centroid lies within the panel's bounding box. Bubbles that fall outside all panels are marked as "unassigned" and appended to the end of the sequence.
+    \item \textbf{Intra-panel Ordering:} Inside each panel (or for the unassigned group), bubbles often do not follow a strict grid. We employ an adaptive row grouping algorithm to sort them:
+\end{itemize}
+
+\begin{algorithm}
+\caption{Adaptive Bubble Ordering}
+\label{alg:adaptive-bubble-ordering}
+\begin{algorithmic}[1]
+\Procedure{AdaptiveBubbleOrdering}{$B$}
+    \State \textbf{Input:} List of bubbles $B = \{b_1, \dots, b_n\}$
+    \State \textbf{Output:} Ordered list $L$
+    
+    \State Sort $B$ by vertical center $y$ (ascending)
+    \State $rows \gets \emptyset$
+    \State $current\_row \gets \{B[1]\}$
+    \State $\tau_{gap} \gets 0.5 \times \text{average\_height}(B)$
+    
+    \For{$i \gets 2$ \textbf{to} $n$}
+        \If{$(B[i].y - B[i-1].y) > \tau_{gap}$}
+            \State $rows \gets rows \cup \{current\_row\}$
+            \State $current\_row \gets \{B[i]\}$
+        \Else
+            \State $current\_row \gets current\_row \cup \{B[i]\}$
+        \EndIf
+    \EndFor
+    \State $rows \gets rows \cup \{current\_row\}$
+    
+    \State $L \gets \emptyset$
+    \For{$row \in rows$}
+        \State Sort $row$ by horizontal center $x$ (descending) \Comment{Right-to-Left}
+        \State $L \gets L \cup row$
+    \EndFor
+    
+    \State \Return $L$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+\subsubsection{Handling Cross-Page Elements}
+
+A specific challenge arises when a panel or a speech bubble spans across the centre spine (the split line). In our current pipeline, these elements are effectively split into two separate instances:
+\begin{itemize}
+    \item \textbf{Cross-Page Panels:} A single large panel spanning both pages is detected as two separate panels: one on the Right Page ($P_R$) and one on the Left Page ($P_L$). Since our ordering logic strictly sequences the Right Page before the Left Page, the narrative flow remains coherent: the reader consumes the content of $P_R$ first, then moves to $P_L$.
+    \item \textbf{Cross-Page Bubbles:} Similarly, a bubble lying on the cut line may be detected as two distinct bubbles. While this generates two separate translation blocks, the temporal ordering is preserved ($\text{Bubble}_R \rightarrow \text{Bubble}_L$).
+\end{itemize}
