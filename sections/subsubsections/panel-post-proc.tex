@@ -1,0 +1,9 @@
+Although YOLO provides instance masks for panels, it occasionally generates fragmented or overlapping detections for a single panel. To address this, we implement a merging strategy based on the Intersection-over-Minimum-Area (IoM) ratio. Unlike standard Intersection-over-Union (IoU), IoM is robust against cases where a fragmented detection is significantly smaller than (and contained within) the main panel prediction.
+
+For any pair of detected panels with bounding boxes $B_i$ and $B_j$, we calculate the overlap ratio $R_{\text{merge}}$:
+
+\begin{equation}
+    R_{\text{merge}} = \frac{\text{area}(B_i \cap B_j)}{\min(\text{area}(B_i), \text{area}(B_j))}
+\end{equation}
+
+We utilize a threshold of $\tau = 0.2$ for the merging decision. This value was \textit{determined empirically} to aggressively merge fragmented predictions while preserving distinct but adjacent panels. If $R_{\text{merge}} > \tau$, the two panels are merged into a single instance: the new bounding box is the union of coordinates, and the new mask is the pixel-wise logical disjunction (OR) of the original masks. This process is repeated iteratively until no overlapping pairs satisfy the condition.
