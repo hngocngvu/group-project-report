@@ -1,3 +1,158 @@
-For translation, we used Neural Machine Translation (NMT) to convert the extracted Japanese text into English text. We utilised the 'elan-mt-ja-en' model series provided by Mitsua, which is built upon the MarianMT framework 
-\cite{junczysdowmunt2018marian}.
-The underlying architechture of the model family is a standard Transformer encoder-decoder network \cite{vaswani2017attention}.
+\subsubsection{Sentence-level translation}
+
+For single sentence translation, we utilised the pretrained 'elan-mt-ja-en' model series provided by Mitsua, which is built upon the MarianMT framework \cite{junczysdowmunt2018marian}. The underlying architecture of the model family is a standard Transformer encoder-decoder network \cite{vaswani2017attention}.
+
+\paragraph{Model Architecture}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\linewidth]{img/marian.png}
+  \caption{MarianMT Architecture}
+  \label{fig:marian-mt}
+\end{figure}
+
+The MarianMT architecture follows the original Transformer design, consisting of an encoder that processes the source Japanese text and a decoder that generates the target English translation autoregressively. The encoder employs multi-head self-attention layers to capture contextual relationships within the input sequence, while the decoder uses both self-attention and cross-attention mechanisms to attend to relevant encoder representations during generation.
+
+The model utilizes SentencePiece tokenization \cite{kudo-richardson-2018-sentencepiece}, a subword segmentation approach that handles the morphologically rich nature of Japanese text by decomposing words into smaller units. This enables the model to handle rare words and out-of-vocabulary tokens effectively while maintaining a manageable vocabulary size.
+
+\paragraph{Model variants}
+
+We integrate three specific variants of the model to balance translation quality and computational efficiency, as shown in Table \ref{tab:elan_3_model}.
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{llp{8cm}}
+    \toprule
+    \textbf{Model Name} & \textbf{Parameters} & \textbf{Description} \\
+    \midrule
+    \rowcolor{gray!10} Mitsua/elan-mt-bt-ja-en & 61M & Back-translation augmented variant with improved handling of colloquial expressions \\
+    Mitsua/elan-mt-base-ja-en & 61M & Base model trained on parallel corpora \\
+    \rowcolor{gray!10} Mitsua/elan-mt-tiny-ja-en & 15M & Lightweight variant optimized for inference speed \\
+    \bottomrule
+  \end{tabular}
+  \caption{Variants of the Mitsua/elan-mt model family}
+  \label{tab:elan_3_model}
+\end{table}
+
+The bt (back-translation) variant employs data augmentation through synthetic parallel data generation, where monolingual English text is translated back to Japanese to create additional training pairs.
+
+The tiny variant reduces the model depth and hidden dimensions, achieving approximately 4× parameter reduction while maintaining reasonable translation quality. This variant is suitable for resource-constrained environments or applications requiring real-time inference.
+
+\subsubsection{Context-aware translation}
+
+Language constructs in Japanese are highly context-dependent, often omitting subjects or objects (pro-drop) known from history. While traditional NMT architectures can benefit from context, they typically require rigid input formats (e.g., simple concatenation) and struggle to incorporate metadata such as the identity of the speaker, visual scene tags or page descriptions.
+
+% TODO: THIS PART ALONE NEEDS TONS OF CITATION (TT)
+
+To address this, we approach translation not as a sequence to sequence task, but a instruction following task with context. We have chosen the \textbf{Qwen-2.5} instruction fine-tuned model family as the baseline for context-grounded translation.
+
+\paragraph{Context schema}
+
+We structured the input of the model as a "Chat" interaction. Unlike standard concatenation methods as in traditional NMT, we encapsulate the context in a structured json object. The schema consist of a \textbf{page\_description} field, which contains the descriptions or overall context of the conversations being referenced, and a \textbf{target\_bubble} field that contains the target bubble, which includes the speaker identity (either a name or an associated id) and the text contained inside the bubble. Additionally, the \textbf{prev\_bubbles} and \textbf{next\_bubble} fields contains a list of bubbles preceding and following the target bubble, respectivel. The length of these lists is the context window size, which can be controlled. Each bubble in these lists also contains the speaker identity and content like the target bubble.
+
+Since extracting the \textbf{page\_description} or speaker identity of each bubble is not always guaranteed, they can be set to "unknown", which notify the model that there is no context regarding those fields.
+
+\begin{verbatim}
+# INPUT
+
+{
+    "page_description": "meeting",
+    "target_bubble": {
+        "speaker": "アル ジョンソンさん",
+        "text": "そうですね、A社の事業はソフトウェア関連なのに、彼は製造関連の仕事をしていましたよね。"
+    },
+    "prev_bubbles": [
+        {
+            "speaker": "ボブ クックさん",
+            "text": "私もそう思ったのですが、ちょっと彼について気になることがあります。"
+        },
+        {
+            "speaker": "アル ジョンソンさん",
+            "text": "営業部長のことですか？"
+        },
+        {
+            "speaker": "unknown",
+            "text": "なんか彼の過去の経歴はA社の業務とは関係ない気がするんですけどね。"
+        }
+    ],
+    "next_bubbles": [
+        {
+            "speaker": "ボブ クックさん",
+            "text": "そうですよね。"
+        },
+        {
+            "speaker": "アル ジョンソンさん",
+            "text": "だけど、営業部長になるということは、顧客のための窓口になるということですよね。"
+        },
+        {
+            "speaker": "ボブ クックさん",
+            "text": "そうですよね、でも業界に精通していることが大切だと思いませんか？"
+        }
+    ]
+}
+
+# EXPECTED OUTPUT
+
+Well, Company A's business is related to software and he worked in the manufacturing industry."
+\end{verbatim}
+
+Importantly, this schema remains compatible with sentence-to-sentence translation: by setting \textbf{page\_description} and speaker to "unknown" and leaving \textbf{prev\_bubbles} and \textbf{next\_bubbles} as empty lists, the model receives only the isolated target sentence, effectively replicating standard NMT behavior within the same framework.
+
+\begin{verbatim}
+# INPUT
+
+{
+    "page_description": "unknown",
+    "target_bubble": {
+        "speaker": "unknown",
+        "text": "そうですね、A社の事業はソフトウェア関連なのに、彼は製造関連の仕事をしていましたよね。"
+    },
+    "prev_bubbles": [],
+    "next_bubbles": []
+}
+
+# EXPECTED OUTPUT
+
+Well, Company A's business is related to software and he worked in the manufacturing industry."
+\end{verbatim}
+
+\paragraph{Chat template formatting}
+
+To ensure with the instruction-tuned Qwen2.5 base model, all training samples and inference inputs are formatted using the ChatML template. This template structures conversations with special tokens that mark the beginning and end of each message along with role identifiers.
+
+\textbf{Template Structure}
+
+\begin{verbatim}
+<|im_start|>system
+{system_message}<|im_end|>
+<|im_start|>user
+{user_message}<|im_end|>
+<|im_start|>assistant
+{assistant_response}<|im_end|>
+\end{verbatim}
+
+During training and inference, the tokenizer will automatically convert the JSON template into the ChatML template.
+
+\paragraph{Training dataset construction}
+
+To train the model to utilise context robustly without losing its general translation capabilities, we constructed a unified instruction-tuning dataset by merging two distinct Japanese to English dataset sources.
+
+\textbf{Sentence to Sentence Sources}
+
+We combined large-scale sentence-level corpora including \textbf{JESC} which contains approximately 2.8 million Japanese-English sentence pairs after filtering. Being a crawled subtitle dataset, JESC is inherently noisier and may contain loose localizations or alignment errors typical of crowdsourced data. However, its inclusion is critical as it provides the vast volume of casual, colloquial speech patterns ($\approx$ 2.8M pairs) essential for manga translation, which formal datasets lack.
+
+To counterbalance the noise from \textbf{JESC}, we incorporated \textbf{Flores+}, \textbf{NTREX}, and \textbf{Opus-100} (train split) as high-quality anchors. \textbf{Flores+} and \textbf{NTREX} are gold-standard benchmarks professionally translated to evaluate machine translation systems, ensuring high grammatical correctness and semantic fidelity. \textbf{Opus-100}, while larger and more diverse, serves as a strong general-domain baseline. Integrating these datasets prevents the model from overfitting to the loose, fragmented style of subtitles, grounding it in proper linguistic structures.
+
+\textbf{Context Rich Source}
+
+We integrated the \textbf{Business Scene Dialogue (BSD)} dataset \cite{rikters-etal-2019-designing} on the train split, which provides rich scene-tagged and speaker-identified dialogues in the 20000 Japanese-English sentence pairs grouped into 670 distinct scenes. For these samples, we populated the JSON schema with large context window ($N=5$ prior/next bubbles), explicit speaker names, and scene descriptions.
+
+% Although our data pipeline supports dynamic OCR noise injection and random metadata masking, we opted to train on the clean "Full Context" configuration for this iteration to establish a strong baseline for context utilization.
+
+The final training set mixes these two distributions. This hybrid approach teaches the model a dual capability: utilizing rich metadata when available (from the \textbf{BSD} samples) while falling back to robust sentence-level translation when no metadata is provided (from the General-Domain Sentence to Sentence sources).
+
+\paragraph{Training configuration}
+
+We fine-tune the \textbf{Qwen2.5-1.5B-Instruct} on the constructed dataset using LoRA (Low Rank Adaptation). During training with LoRA, we freezes the pre-trained model's weights and inject trainable rank decomposition matrices into one or several into specified layers of the model. This technique can significantly reduce the number of trainable parameter and VRAM requirements while being competitive to full supervised fine-tuning when trained on our dataset ($\approx$ 3.3M samples).
+
+The training details of our model can be found in Appendix.
