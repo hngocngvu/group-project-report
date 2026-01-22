@@ -1,43 +1,92 @@
-For NLP tasks like OCR and Translation we use Word Error Rate (WER), Character Error Rate (CER) and BLEUScore as the primary metrics for text OCR pipeline, for Jp-En translation pipeline we use BLEUScore and chrF++ metrics.
+\subsubsection{OCR Metrics}
+
+For OCR evaluation, we use Character Error Rate (CER) and Word Error Rate (WER) as the primary metrics.
 
 \begin{enumerate}
-    \item  \textbf{Word Error Rate (WER)}
-
-    WER is widely used to evaluate the accuracy of translation and transcription systems. It is derived as the Levenshtein distance from the predicted text and the reference text divided by total number of words in the reference text, the metric is formulated as follow:
-
-    \begin{equation}
-        WER = \frac{S + D + I}{N}
-    \end{equation}
-
-    Where S (Substitution) is the number of words incorrectly recognized as different words, D (Deletion) is the number of words present in the reference but missing in the prediction, I (Insertion) is the number of extra words present in the prediction but not in the reference.
-
     \item \textbf{Character Error Rate (CER)}
 
-    CER is derived as the Levenshtein distance from the translated text and the reference text divided by total number of character in the reference text, the metric is formulated as follow:
+    CER is derived as the Levenshtein distance from the predicted text and the reference text divided by total number of characters in the reference text, the metric is formulated as follow:
 
     \begin{equation}
         CER = \frac{S + D + I}{N}
     \end{equation}
 
-    Where S (Substitution) is the number of character incorrectly recognized as different character, D (Deletion) is the number of characters present in the reference but misssing in the prediction, I (Insertion) is the number of extra characters present in the prediction but not in the reference. For Japanese to English translation, CER is more prefered than WER (Word Error Rate).
+    Where:
+    \begin{itemize}
+        \item S (Substitution): the number of characters incorrectly recognized as different characters
+        \item D (Deletion): the number of characters present in the reference but missing in the prediction
+        \item I (Insertion): the number of extra characters present in the prediction but not in the reference
+        \item N: the \textbf{total number of characters} in the reference text
+    \end{itemize}
 
-    \item \textbf{BLEU Score}
-    The Bilingual Evaluation Understudy (BLEU) score is the standard metric for evaluating the quality of machine-translated text against human reference translations. It measures the correspondence between the machine's output and the professional translation based on n-gram overlap.
+    \item \textbf{Word Error Rate (WER)}
+
+    WER is widely used to evaluate the accuracy of transcription systems. It is derived as the Levenshtein distance from the predicted text and the reference text divided by total number of words in the reference text, the metric is formulated as follow:
 
     \begin{equation}
-        BLEU = BP \cdot exp \left( \sum_{n=1}^{N} w_n \log p_n \right)  
+        WER = \frac{S + D + I}{N}
     \end{equation}
 
-    Where $p_n$ is the modified n-gram precision, which measures the fraction of n-grams (sequences of $n$ words) in the candidate text that also appear in the reference text. Standard BLEU typically uses 1-gram to 4-gram overlaps ($N=4$). $w_n$ is the weight assigned to each n-gram level, typically set uniformly ($1/N$).
-    BP (Brevity Penalty) is a multiplicative factor that penalizes translations that are significantly shorter than the reference. This prevents the model from achieving artificially high precision scores by outputting only a few safe words.
+    Where:
+    \begin{itemize}
+        \item S (Substitution): the number of words incorrectly recognized as different words
+        \item D (Deletion): the number of words present in the reference but missing in the prediction
+        \item I (Insertion): the number of extra words present in the prediction but not in the reference
+        \item N: the \textbf{total number of words} in the reference text
+    \end{itemize}
+\end{enumerate}
 
-    \item \textbf{Character n-gram F-score (chrF)}
+\subsubsection{Translation Metrics}
 
-    The Character n-gram F-score (chrF) is an evaluation metric that assesses the quality of machine translation by calculating the F-score of character n-gram overlaps between the hypothesis and the reference. Unlike BLEU, which operates at the word level, chrF works at the character level, making it particularly robust for morphologically rich languages and less sensitive to tokenization errors.
+For Japanese-to-English translation evaluation, we use COMETScore and BERTScore as the primary metrics, with chrF and chrF++ as additional metrics for reference.
+
+\begin{enumerate}
+    \item \textbf{COMETScore}
+
+    COMET (Crosslingual Optimized Metric for Evaluation of Translation) is a neural-based metric that leverages pre-trained multilingual language models to evaluate translation quality. Unlike traditional n-gram-based metrics, COMET learns to predict human judgments by fine-tuning on human evaluation datasets. We use COMET-22 (wmt22-comet-da), the Direct Assessment model from WMT 2022 \cite{rei2022comet}.
+
+    \begin{equation}
+        COMET = f_\theta(src, hyp, ref)
+    \end{equation}
+
+    Where:
+    \begin{itemize}
+        \item $f_\theta$: a neural model (typically based on XLM-RoBERTa) that encodes the inputs
+        \item $src$: the source text
+        \item $hyp$: the hypothesis translation
+        \item $ref$: the reference translation
+    \end{itemize}
+    
+    COMET produces a quality score and has shown strong correlation with human judgments, being particularly effective for evaluating semantic adequacy.
+
+    \item \textbf{BERTScore}
+
+    BERTScore leverages pre-trained contextual embeddings from BERT to compute similarity between candidate and reference translations \cite{zhang2020bertscore}. Instead of exact n-gram matching, it computes semantic similarity at the token level. We use the DeBERTa-xlarge-mnli (microsoft/deberta-xlarge-mnli) backbone, which is the gold standard recommended model for BERTScore.
+
+    \begin{equation}
+        BERTScore_F = \frac{2 \cdot P_{BERT} \cdot R_{BERT}}{P_{BERT} + R_{BERT}}
+    \end{equation}
+
+    Where:
+    \begin{itemize}
+        \item $P_{BERT}$: precision (matching tokens in candidate to reference)
+        \item $R_{BERT}$: recall (matching tokens in reference to candidate)
+    \end{itemize}
+    
+    Each token is represented by its contextual embedding, and similarity is computed using cosine similarity.
+
+    \item \textbf{Character n-gram F-score (chrF and chrF++)}
+
+    The Character n-gram F-score (chrF) \cite{popovic2015chrf} is an evaluation metric that assesses the quality of machine translation by calculating the F-score of character n-gram overlaps between the hypothesis and the reference. Unlike word-level metrics, chrF works at the character level, making it particularly robust for morphologically rich languages and less sensitive to tokenization errors.
 
     \begin{equation}
         chrF = \frac{(1 + \beta^2) \cdot chrP \cdot chrR}{\beta^2 \cdot chrP + chrR}
     \end{equation}
 
-    Where "chrP" (Character Precision) refers to the percentage of character n-grams in the system output that are also present in the reference, and "chrR" (Character Recall) refers to the percentage of character n-grams in the reference that are present in the system output. The parameter $\beta$ controls the weight given to recall versus precision; typically, $\beta=2$ is used (often called chrF++) to emphasize recall.
+    Where:
+    \begin{itemize}
+        \item chrP (Character Precision): the percentage of character n-grams in the system output that are also present in the reference
+        \item chrR (Character Recall): the percentage of character n-grams in the reference that are present in the system output
+        \item $\beta$: controls the weight given to recall versus precision; typically $\beta=2$ is used (called chrF++ \cite{popovic2017chrf++}) to emphasize recall
+    \end{itemize}
 \end{enumerate}
