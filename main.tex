@@ -1,4 +1,4 @@
-\documentclass{article}
+\documentclass[13pt]{article}
 \usepackage[a4paper, tmargin=1.5cm, lmargin=1.5cm, rmargin=1.5cm, bmargin=1.5cm]{geometry}
 \usepackage{hyperref}
 %\usepackage{multicol}
@@ -84,10 +84,31 @@
 
 \newpage 
 \addtocontents{toc}{\protect\setcounter{tocdepth}{-1}}
-\section*{Acknowledgements}
-\addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
+\section*{List of Abbreviations}
+\addtocontents{toc}{\protect\setcounter{tocdepth}{3}}
+\begin{table}[H]
+    \centering
+    \large 
+    \begin{tabular}{ll}
+        \\
+        CNN & Convolutional Neural Network \\
+        \\
+        COCO & Common Objects in Context \\
+        \\
+        ELAN & Efficient Layer Aggregation Networks\\
+        \\
+        OCR & Optical Character Recognition \\
+        \\
+        YOLO & You Only Look Once\\
+        \\
+        BLEU & Bilingual Evaluation Understudy \\
+        \\
+        UC & Use Case\\
+        \\
+    \end{tabular}
+\end{table}
 
-\clearpage
+\newpage
 \thispagestyle{empty}
 \tableofcontents
 \clearpage
@@ -97,7 +118,7 @@
 \addtocontents{toc}{\protect\setcounter{tocdepth}{-1}}
 \centering 
 \section*{Abstract}
-\addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
+\addtocontents{toc}{\protect\setcounter{tocdepth}{3}}
 \input{sections/abstract}
 
 \raggedright
@@ -105,7 +126,7 @@
 \section{Introduction}
 \input{sections/introduction}
 
-\section{Literature Review}
+\section{Related Works}
 \input{sections/literature-review}
 \subsection{Speech Bubble Segmentation}
 \input{sections/subsections/bubble-lr}
@@ -167,7 +188,7 @@
 \subsubsection{Segmentation}
 \input{sections/subsubsections/segmentation-eval-met}
 
-\subsubsection{NLP metrics}
+\subsubsection{Natural Language Processing metrics}
 \input{sections/subsubsections/nlp-metrics}
 
 \section{Results and Evaluation}
@@ -221,8 +242,11 @@
 \section{Limitations and Future Works}
 \section{Conclusion}
 
+\section*{Acknowledgements}
+We would like to express our sincere gratitude to our supervisor, Assoc. Prof. Tran Giang Son, for his invaluable guidance, support, and constructive feedback throughout the duration of this project.
 
-\newpage
+We also gratefully acknowledge ICTLab for providing access to the server resources used in our experiments. In addition, we would like to thank the Aizawa–Yamasaki–Matsui Laboratory for granting us permission to use their dataset, which was essential to this research.
+
 \bibliographystyle{IEEEtran}
 \bibliography{references}
 

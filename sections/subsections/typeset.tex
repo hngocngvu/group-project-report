@@ -1,90 +1,189 @@
-% --- Part 1: SplitConnectedBubbles ---
+% fix
+
+Typesetting is the final step in the manga translation pipeline. It takes the output of the post-processor and uses it to typeset the text in the panel. The typesetter is a simple function that takes a mask and a list of bounding boxes as input and returns a list of typesetted text. The typesetter uses the bounding boxes to determine the layout of the text and the mask to determine the content of the text.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|l|}
+    \hline
+    \textbf{Component} & \textbf{Purpose} \\
+    \hline
+    Whitening & Erasing the original Japanese characters by filling the eroded mask region with white pixels.\\
+    \hline 
+    Text Rendering & Rendering the text in the bubble mask.\\
+    \hline
+    Collision Detection & Ensuring that the rendered text does not collide with the bubble boundary.\\
+    \hline
+    Typesetting & Typesetting the text in the bubble mask.\\
+    \hline
+\end{tabular}
+\caption{Typesetting Module Components}
+\end{table}
+
+The typesetting pipeline operates in two sequential phases. In the whitening phase illustrated in Algorithm \ref{alg:render_bubb}, we iterate over each bubble that contains translated text and erase the original Japanese characters by filling the eroded mask region with white pixels. Erosion with a $6 \times 6$ kernel prevents the fill from bleeding into the bubble's border, preserving the visual integrity of the speech balloon outline.
+
+The text rendering phase employs an adaptive font-sizing strategy. Starting from the largest feasible font size (the minimum of the bounding box's height and width), we progressively reduce the size in decrements of 2 until the wrapped text fits entirely within the bubble mask. The SmartWrapText function in Algorithm \ref{alg:smart-wrap} handles word-level wrapping first; if a single word exceeds the available width, it falls back to character-level breaking to ensure no text overflows.
+
+To guarantee that rendered text does not collide with the bubble boundary, we perform pixel-level collision detection described in Algorithm \ref{alg:collision-detect} and \ref{alg:collision-mask}: the text block is temporarily drawn onto a blank canvas, and a bitwise and operation checks whether any text pixels overlap with the inverted bubble mask (i.e., the "wall" region outside the bubble). If collision is detected, we reduce the font size and retry. Should no valid size be found above the minimum threshold of 12 pixels, the algorithm renders the text at the minimum size regardless—ensuring the translation is always visible, albeit potentially clipped.
+
+Finally, the text is drawn centered on the bubble's centroid $(c_x, c_y)$, yielding a natural, balanced appearance consistent with professional manga typesetting conventions.
+
+
+
 \begin{algorithm}[H]
-\caption{Split Merged Speech Bubbles Using Convexity Defects (Part 1)}
+\caption{Render Translated Bubbles}
+\label{alg:render_bubb}
 \begin{algorithmic}[1]
-\State \textbf{Input:} $M$ (Binary mask of detected bubble), $depth$ (current recursion depth)
-\State \textbf{Output:} List of separated bubble masks
+\Function{Render}{$I_{\text{original}}, B$}
+    \State $I_{\text{final}} \gets$ copy($I_{\text{original}}$)
+    \State $K_{\text{erosion}} \gets$ ones($6 \times 6$)
 
-\Function{SplitConnectedBubbles}{$M, depth$}
-    \If{$depth \geq \text{MAX\_SPLIT\_DEPTH}$}
-        \State \Return $[M]$
-    \EndIf
-    \State $sub\_masks \gets \Call{AttemptSplitOnce}{M}$
-
-    \If{$|sub\_masks| = 1$}
-        \State \Return $sub\_masks$
-    \EndIf
-    \State $result \gets \emptyset$
-    \ForAll{$sub \in sub\_masks$}
-        \State $result \gets result \cup \Call{SplitConnectedBubbles}{sub, depth + 1}$
+    \Statex{Phase 1: Whitening (Inpainting) Step}
+    \ForAll{$b \in B$}
+        \If{$b.\text{translated\_text}$ is empty}
+            \State \textbf{continue}
+        \EndIf
+        \State $M \gets b.\text{original\_mask} \text{ or } b.\text{mask}$
+        \State $M_{\text{eroded}} \gets \text{Erode}(M, K_{\text{erosion}})$
+        \State $C \gets \text{FindContours}(M_{\text{eroded}})$
+        \State \text{FillContours}($I_{\text{final}}, C, \text{white}$)
     \EndFor
-    \State \Return $result$
+
+    \Statex{Phase 2: Text Rendering Step}
+    \State $I_{\text{pil}} \gets \text{ConvertToPIL}(I_{\text{final}})$
+    \State $D \gets \text{CreateDrawContext}(I_{\text{pil}})$
+
+    \ForAll{$b \in B$}
+        \If{$b.\text{translated\_text}$ is not empty}
+            \State \text{FitText}($D, b.\text{translated\_text}, b.\text{mask}$)
+        \EndIf
+    \EndFor
+
+    \State \Return \text{ConvertToNumpy}($I_{\text{pil}}$)
 \EndFunction
 \end{algorithmic}
 \end{algorithm}
-% --- Part 2: AttemptSplitOnce ---
+
 \begin{algorithm}[H]
-\caption{Split Merged Speech Bubbles Using Convexity Defects (Part 2)}
+\caption{Smart Word Wrapping}
+\label{alg:smart-wrap}
 \begin{algorithmic}[1]
-\State \textbf{Input:} $M$ (Binary mask of detected bubble)
-\State \textbf{Output:} List of separated bubble masks
+\Function{SmartWrapText}{$D, T, F, W_{\text{max}}$}
+    \State $words \gets \text{Split}(T)$
+    \State $L \gets []$  \Comment{List of wrapped lines}
+    \State $current\_line \gets []$
 
-\Function{AttemptSplitOnce}{$M$}
-    \State $contour \gets \Call{LargestContour}{M}$
-    \If{$contour = \emptyset$ \textbf{or} \Call{Area}{contour} < 500}
-        \State \Return $[M]$
-    \EndIf
-    \State $hull \gets \Call{ConvexHull}{contour}$
-    \State $defects \gets \Call{ConvexityDefects}{contour, hull}$
-    \If{$defects = \emptyset$}
-        \State \Return $[M]$
-    \EndIf
+    \ForAll{$w \in words$}
+        \State $test\_line \gets \text{Join}(current\_line + [w], \text{space})$
+        \State $width \gets \text{MeasureTextWidth}(D, test\_line, F)$
 
-    \State $candidates \gets \emptyset$
-    \ForAll{$(s,e,f,d) \in defects$}
-        \State $depth\_val \gets d / 256.0$
-        \If{$depth\_val > \text{MIN\_DEFECT\_DEPTH}$}
-            \State $\vec{v_1} \gets s - f$, $\vec{v_2} \gets e - f$
-            \State $angle \gets \arccos\left(\frac{\vec{v_1} \cdot \vec{v_2}}{|\vec{v_1}| |\vec{v_2}|}\right)$
-            \If{$angle < \text{MAX\_ANGLE\_DEG}$}
-                \State $candidates \gets candidates \cup \{(f, depth\_val)\}$
+        \If{$width \leq W_{\text{max}}$}
+            \State Append $w$ to $current\_line$
+        \Else
+            \If{$current\_line \neq []$}
+                \State Append Join($current\_line$, space) to $L$
+                \State $current\_line \gets [w]$
+            \Else
+                \Statex{Force character-level breaking}
+                \State $temp \gets ""$
+                \ForAll{$c \in w$}
+                    \If{$\text{MeasureTextWidth}(D, temp+c, F) \leq W_{\text{max}}$}
+                        \State $temp \gets temp + c$
+                    \Else
+                        \State Append $temp$ to $L$
+                        \State $temp \gets c$
+                    \EndIf
+                \EndFor
+                \State $current\_line \gets [temp]$
             \EndIf
         \EndIf
     \EndFor
 
-    \State $candidates \gets \Call{SortByDepth}{candidates, descending}$
-    \State $unique \gets \emptyset$
-    \ForAll{$c \in candidates$}
-        \If{$\forall u \in unique: \|c.point - u.point\| \geq \text{MIN\_DIST}$}
-            \State $unique \gets unique \cup \{c\}$
-        \EndIf
-    \EndFor
-
-    \State $M_{cut} \gets M$
-    \State $cut\_happened \gets false$
-    \If{$|unique| \geq 2$}
-        \State $top4 \gets$ first 4 elements of $unique$
-        \State $(p_1,p_2) \gets \Call{ClosestPair}{top4}$
-        \State \Call{DrawLine}{$M_{cut}, p_1, p_2$, color=0, thickness=3}
-        \State $cut\_happened \gets true$
+    \If{$current\_line \neq []$}
+        \State Append Join($current\_line$, space) to $L$
     \EndIf
 
-    \If{$cut\_happened$}
-        \State $contours_{new} \gets \Call{FindContours}{M_{cut}}$
-        \State $masks_{new} \gets \emptyset$
-        \ForAll{$c \in contours_{new}$}
-            \If{\Call{Area}{c} > 100}
-                \State $m \gets \Call{CreateMaskFrom}{c}$
-                \State $masks_{new} \gets masks_{new} \cup \{m\}$
-            \EndIf
+    \State \Return $L$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[H]
+\caption{Fit Text in Mask with Collision Detection}
+\label{alg:collision-detect}
+\begin{algorithmic}[1]
+\Function{FitTextInMask}{$D, T, M$}
+    \State $C \gets \text{FindContours}(M)$
+    \If{$C = \emptyset$} \State \Return \EndIf
+
+    \State $cnt \gets \text{LargestContourByArea}(C)$
+    \State $(x, y, w, h) \gets \text{BoundingRect}(cnt)$
+    \State $(c_x, c_y) \gets \text{ComputeCentroid}(cnt)$
+    \State $M_{\text{crop}} \gets M[y:y+h, x:x+w]$
+
+    \Statex{Attempt 1: Pixel-Perfect Fit with Binary Search}
+    \State $s_{\text{font}} \gets \min(h, w)$
+    \State $s_{\min} \gets 12$
+    \State $font_{\text{best}} \gets \text{null}$
+
+    \While{$s_{\text{font}} \geq s_{\min}$}
+        \State $F \gets \text{LoadFont}(s_{\text{font}})$
+        \State $L \gets \text{SmartWrapText}(D, T, F, 0.95 \times w)$
+        \State $H_{\text{text}} \gets \sum_{l \in L} \text{TextHeight}(l, F)$
+
+        \If{$H_{\text{text}} > h$}
+            \State $s_{\text{font}} \gets s_{\text{font}} - 2$
+            \State \textbf{continue}
+        \EndIf
+
+        \Statex{Collision Detection via Mask Rendering}
+        \State $Canvas \gets \text{CreateCanvas}(w, h, \text{black})$
+        \State $y_{\text{curr}} \gets (c_y - y) - H_{\text{text}}/2$
+
+        \ForAll{$l \in L$}
+            \State RenderText($Canvas, l, (c_x - x - w_l/2, y_{\text{curr}}), F, \text{white}$)
+            \State $y_{\text{curr}} \gets y_{\text{curr}} + \text{TextHeight}(l, F)$
         \EndFor
-        \If{$|masks_{new}| > 1$}
-            \State \Return $masks_{new}$
+
+        \If{not CheckMaskCollision($Canvas, M_{\text{crop}}$)}
+            \State $font_{\text{best}} \gets F$
+            \State $lines_{\text{best}} \gets L$
+            \State $y_{\text{start}} \gets c_y - H_{\text{text}}/2$
+            \State \textbf{break}
+        \Else
+            \State $s_{\text{font}} \gets s_{\text{font}} - 2$
         \EndIf
+    \EndWhile
+
+    \Statex{Attempt 2: Fallback - Force Render at Minimum Size}
+    \If{$font_{\text{best}} = \text{null}$}
+        \State $font_{\text{best}} \gets \text{LoadFont}(s_{\min})$
+        \State $lines_{\text{best}} \gets \text{SmartWrapText}(D, T, font_{\text{best}}, w)$
+        \State $H_{\text{text}} \gets \sum_{l \in lines_{\text{best}}} \text{TextHeight}(l, font_{\text{best}})$
+        \State $y_{\text{start}} \gets c_y - H_{\text{text}}/2$
     \EndIf
 
-    \State \Return $[M]$
+    \Statex{Final Rendering}
+    \State $y_{\text{curr}} \gets y_{\text{start}}$
+    \ForAll{$l \in lines_{\text{best}}$}
+        \State $w_l \gets \text{TextWidth}(l, font_{\text{best}})$
+        \State DrawText($D, l, (c_x - w_l/2, y_{\text{curr}}), font_{\text{best}}, \text{black}$)
+        \State $y_{\text{curr}} \gets y_{\text{curr}} + \text{TextHeight}(l, font_{\text{best}})$
+    \EndFor
 \EndFunction
 \end{algorithmic}
 \end{algorithm}
+
+\begin{algorithm}[H]
+\caption{Mask Collision Detection}
+\label{alg:collision-mask}
+\begin{algorithmic}[1]
+\Function{CheckMaskCollision}{$M_{\text{text}}, M_{\text{bubble}}$}
+    \State $M_{\text{wall}} \gets \text{BitwiseNot}(M_{\text{bubble}})$ \Comment{White = Wall boundary}
+    \State $M_{\text{overlap}} \gets \text{BitwiseAnd}(M_{\text{text}}, M_{\text{wall}})$
+    \State \Return $\text{CountNonZero}(M_{\text{overlap}}) > 0$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
 

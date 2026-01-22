@@ -1,4 +1,6 @@
-In text detection and recognition, Hirata et al. \cite{hirata2016comics} employed an image operator learning method generating binary segmentation in pixel level. 
+Early in 2012, Ranjini and Sundaresan \cite{Ranjini2012TwoBlobsComic} employed connected component analysis and edge-based features to extract English text from comic images.
+A similar text detection task was later addressed by Aramaki et al. \cite{Aramaki2016TextDetectionManga} in 2016, who combined connected-component-based and region-based classification.
+In the same year, Hirata et al. \cite{hirata2016comics} employed an image operator learning method generating binary segmentation in pixel level. 
 Machine learning algorithms were applied to learn image operators from training images with ground truths, where windows are considered as features.
 The choice for window value is important in this task, which can lead to large generalization error. Therefore, two-level operators were born to solve the problem by using moderate size windows for training and combining resulting images.
 Later in 2018, Chu et al. \cite{chu2018text} proposed two approaches based on deep networks for text detection.
