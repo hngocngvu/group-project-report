@@ -25,14 +25,6 @@ Typesetting is the final step in the manga translation pipeline. It takes the ou
 
 The typesetting pipeline operates in two sequential phases. In the whitening phase illustrated in Algorithm \ref{alg:render_bubb}, we iterate over each bubble that contains translated text and erase the original Japanese characters by filling the eroded mask region with white pixels. Erosion with a $6 \times 6$ kernel prevents the fill from bleeding into the bubble's border, preserving the visual integrity of the speech balloon outline.
 
-The text rendering phase employs an adaptive font-sizing strategy. Starting from the largest feasible font size (the minimum of the bounding box's height and width), we progressively reduce the size in decrements of 2 until the wrapped text fits entirely within the bubble mask. The SmartWrapText function in Algorithm \ref{alg:smart-wrap} handles word-level wrapping first; if a single word exceeds the available width, it falls back to character-level breaking to ensure no text overflows.
-
-To guarantee that rendered text does not collide with the bubble boundary, we perform pixel-level collision detection described in Algorithm \ref{alg:collision-detect} and \ref{alg:collision-mask}: the text block is temporarily drawn onto a blank canvas, and a bitwise and operation checks whether any text pixels overlap with the inverted bubble mask (i.e., the "wall" region outside the bubble). If collision is detected, we reduce the font size and retry. Should no valid size be found above the minimum threshold of 12 pixels, the algorithm renders the text at the minimum size regardless—ensuring the translation is always visible, albeit potentially clipped.
-
-Finally, the text is drawn centered on the bubble's centroid $(c_x, c_y)$, yielding a natural, balanced appearance consistent with professional manga typesetting conventions.
-
-
-
 \begin{algorithm}[H]
 \caption{Render Translated Bubbles}
 \label{alg:render_bubb}
@@ -66,6 +58,8 @@ Finally, the text is drawn centered on the bubble's centroid $(c_x, c_y)$, yield
 \EndFunction
 \end{algorithmic}
 \end{algorithm}
+
+The text rendering phase employs an adaptive font-sizing strategy. Starting from the largest feasible font size (the minimum of the bounding box's height and width), we progressively reduce the size in decrements of 2 until the wrapped text fits entirely within the bubble mask. The SmartWrapText function in Algorithm \ref{alg:smart-wrap} handles word-level wrapping first; if a single word exceeds the available width, it falls back to character-level breaking to ensure no text overflows.
 
 \begin{algorithm}[H]
 \caption{Smart Word Wrapping}
@@ -110,6 +104,8 @@ Finally, the text is drawn centered on the bubble's centroid $(c_x, c_y)$, yield
 \EndFunction
 \end{algorithmic}
 \end{algorithm}
+
+To guarantee that rendered text does not collide with the bubble boundary, we perform pixel-level collision detection described in Algorithm \ref{alg:collision-detect} and \ref{alg:collision-mask}: the text block is temporarily drawn onto a blank canvas, and a bitwise and operation checks whether any text pixels overlap with the inverted bubble mask (i.e., the "wall" region outside the bubble). If collision is detected, we reduce the font size and retry. Should no valid size be found above the minimum threshold of 12 pixels, the algorithm renders the text at the minimum size regardless—ensuring the translation is always visible, albeit potentially clipped.
 
 \begin{algorithm}[H]
 \caption{Fit Text in Mask with Collision Detection}
@@ -189,4 +185,5 @@ Finally, the text is drawn centered on the bubble's centroid $(c_x, c_y)$, yield
 \end{algorithmic}
 \end{algorithm}
 
+Finally, the text is drawn centered on the bubble's centroid $(c_x, c_y)$, yielding a natural, balanced appearance consistent with professional manga typesetting conventions.
 

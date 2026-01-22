@@ -2,22 +2,25 @@
     \centering
     \begin{tabular}{|l|l|}
         \hline
-        \textbf{Segment bubbles} & \\
+        \textbf{Recognize texts} & \\
         \hline
-        \textbf{Actors} & User\\
+        \textbf{Actors} & System\\
         \hline
-        \textbf{Description} & User can segment speech bubbles in the image.\\
+        \textbf{Description} & System detects Japanese texts utilizing OCR model. The recognized texts \\
+        & are stored with no visual output.\\
         \hline
         \textbf{Data} & An input image\\
         \hline
-        \textbf{Stimuli} & User selects to run inference.\\
+        \textbf{Stimuli} & User drags the image into queue.\\
         \hline
-        \textbf{Response} & The system processes the input image using the chosen segmentation model\\
-        & and displays the image with segmented speech bubbles.\\
+        \textbf{Response} & Recognized Japanese texts are stored internally and can be viewed\\
+        & by user selecting segmented bubbles.\\
         \hline
-        \textbf{Pre-conditions} & An image is opened and user chooses the segmentation model.\\
+        \textbf{Pre-conditions} & An image is dragged into the queue.\\
+        & OCR model is loaded.\\
         \hline
-        \textbf{Post-conditions} & The image is displayed with bounded speech bubbles.\\
+        \textbf{Post-conditions} & System proceeds to translation stage.\\
+        & Recognized Japanese texts are available for user editing.\\
         \hline
     \end{tabular}
 \end{table}
