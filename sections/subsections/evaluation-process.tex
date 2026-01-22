@@ -11,14 +11,12 @@ This structure necessitates the \textbf{Many-to-One} mapping strategy used in ou
 
 \subsubsection{Component-Level Evaluation}
 
-\textbf{Bubble \& Panel Segmentation:}
+\textbf{Bubble \& Panel Segmentation:} is evaluated on the \textbf{Manga109s} test split (22 volumes). We report standard COCO metrics (Precision, Recall, mAP) to measure the geometric accuracy of bounding boxes and segmentation masks.
 
-Evaluated on the \textbf{Manga109s} test split (22 volumes). We report standard COCO metrics (Precision, Recall, mAP) to measure the geometric accuracy of bounding boxes and segmentation masks.
+\vspace{1em}
+\textbf{OCR:} is evaluated on both \textbf{Manga109s} (cropped bubbles). We measure Character Error Rate (CER) and Word Error Rate (WER).
 
-\textbf{OCR:}
-
-Evaluated on both \textbf{Manga109s} (cropped bubbles). We measure Character Error Rate (CER) and Word Error Rate (WER).
-
+\vspace{1em}
 \textbf{Sentence-Level Translation:}
 
 The baseline NMT models (ElanMT variants) and the LoRA fine-tuned model were benchmarked on standard machine translation test sets: \textbf{Flores+, NTREX, and Opus100}. These datasets provide diverse linguistic coverage but lack manga-specific context. Metrics include \textbf{FILL IN HERE}.
@@ -27,6 +25,7 @@ The baseline NMT models (ElanMT variants) and the LoRA fine-tuned model were ben
 
 To assess the Context-Aware LLM and the integrated system (Segmentation $\rightarrow$ Ordering $\rightarrow$ Translation), we utilize the \textbf{OpenMantra} dataset. This is the only dataset providing coherent full-page contexts necessary for evaluating discourse-level phenomena.
 
+\vspace{1em}
 \textbf{Pipeline Matching Strategy:}
 
 To evaluate sequential outputs, predicted bubbles are matched to Ground Truth (GT) regions using a containment threshold of 
@@ -42,36 +41,37 @@ This strategy enables a \textbf{Many-to-One} mapping capability. If a single pre
     \item \textbf{False Positives:} Predicted bubbles that contain no ground truth text are flagged as empty predictions.
 \end{itemize}
 
+\vspace{1em}
 \textbf{Ordering Metrics:}
 
 The layout analysis module is evaluated by comparing the sequence of matched GT indices against the true reading order using \textbf{Kendall's Tau ($\tau$)} and \textbf{Exact Match Rate}.
 
+\vspace{1em}
 \textbf{Kendall's Rank Correlation Coefficient ($\tau_b$)}
 
 To assess the correctness of the predicted reading order, we employ Kendall's Tau-b ($\tau_b$), a robust correlation statistic that accounts for potential ties in the ranking sequence. Unlike simple accuracy, it penalizes the severity of ordering errors based on relative positions.
 
 \[ \tau_b = \frac{C - D}{\sqrt{(C + D + T_x)(C + D + T_y)}} \]
 
-Where:
-\begin{itemize}
-    \item $C$ is the number of concordant pairs (correctly ordered pair).
-    \item $D$ is the number of discordant pairs (incorrectly ordered pair).
-    \item $T_x$ is the number of ties in the predicted ranking.
-    \item $T_y$ is the number of ties in the ground truth ranking.
-\end{itemize}
+Where $C$ is the number of concordant pairs (correctly ordered pair),
+$D$ is the number of discordant pairs (incorrectly ordered pair),
+$T_x$ is the number of ties in the predicted ranking and $T_y$ is the number of ties in the ground truth ranking.
 
 The coefficient ranges from $-1$ (perfect reversal) to $+1$ (perfect match). A high $\tau_b$ signifies that the narrative flow is preserved not just globally but also between local bubble pairs.
 
+\vspace{1em}
 \textbf{Exact Match Rate (EMR)}
 
 EMR measures the strict correctness of the layout analysis pipeline. A page is considered an exact match if and only if the entire sequence of predicted bubbles corresponds perfectly to the ground truth reading order ($\tau = 1$).
 \[ \text{EMR} = \frac{1}{N} \sum_{i=1}^N \mathbb{1}(\tau_i = 1) \] 
 Where $N$ is the total number of pages evaluated and $\mathbb{1}$ is the indicator function.
 
+\vspace{1em}
 \textbf{Context-Aware Translation Metrics:}
 
 Unlike sentence-level tests, this evaluation measures translation quality \textbf{in situ}, taking into account text from previous and next bubbles. We report BLEU, BERTScore, and COMET scores computed on the matched speech bubbles.
 
+\vspace{1em}
 \textbf{Handling Detection Failures in Downstream Evaluation:}
 
 A critical consideration for end-to-end pipeline evaluation is the treatment of undetected speech bubbles. When the segmentation model fails to detect a ground-truth bubble, we assign an empty string ("") as the predicted OCR and translation output for that instance. This ensures that downstream metrics (CER, WER, BLEU, chrF++) naturally penalize detection failures through increased edit distances and reduced n-gram overlaps, rather than artificially inflating scores by evaluating only successfully detected bubbles.
