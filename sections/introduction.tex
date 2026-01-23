@@ -1,26 +1,26 @@
 Among recent forms of entertainment, digital comics have become increasingly important, especially for young audiences, due to their distinctive hand-drawn art styles and engaging storylines. Comics not only provide entertainment but also foster imagination, creativity, and visual literacy in readers. Their narratives are conveyed primarily through illustrations, making complex ideas and emotions more accessible to younger minds. The diversity of comic content is expanding as creators can easily publish online and reach a wide audience. Manga, a style of comic originating in Japan, has gained significant global popularity—not only for its unique artistic style but also for its rich storytelling and cultural insights.
-To make manga accessible to global audiences, translation plays a vital role.
+To make manga accessible to global audiences, translation plays a vital role.\\
 
 However, the process is highly labor-intensive because translators not only interpret the text, but also edit comic pages using graphic tools, remove original dialogues, and replace them with translated content. 
 While translation itself is already a demanding task, the additional manual work significantly increases both time and effort, leading to exhaustion, low efficiency, and quality reduction which may impact readers' experience. 
 The manual translation workflow typically consists of several stages, as illustrated in Figure \ref{fig:manual_workflow}.
 First, translators read the manga to identify key terms and establish a style guide. They then produce translation drafts while continuously updating the glossary.
 The final stage is typesetting, which is usually handled by letterers in large translation teams, or by the translators themselves in smaller teams. Images are edited to replace the original text with the translated text.
-This repetitive procedure can be exhausting for translators, as manga series are typically released over multiple volumes.
+This repetitive procedure can be exhausting for translators, as manga series are typically released over multiple volumes.\\
 
-With the advancement of technology, comic translation applications were born to support translators and improve workflow efficiency. They can reduce manual workload by automating tasks so that translators can focus on delivering high-quality translations. We propose an end-to-end application supporting professional translators by extracting speech bubbles and text automatically, along with assisted translation features. This work aims to bridge computer vision and natural language processing to perform automatic manga translation.
+With the advancement of technology, comic translation applications were born to support translators and improve workflow efficiency. They can reduce manual workload by automating tasks so that translators can focus on delivering high-quality translations. We propose an end-to-end application supporting professional translators by extracting speech bubbles and text automatically, along with assisted translation features. This work aims to bridge computer vision and natural language processing to perform automatic manga translation.\\
 
-Applying deep learning models and computer vision techniques to manga translation has become a popular topic in academic research. However, practical applications for manga translation are limited and still present several drawbacks for professional translators. Manga Translator \cite{manga_translator}, Comic Translate \cite{comic_translate}, and Mantra Engine \cite{mantra_engine} are representative applications developed for manga translation, corresponding respectively to web, desktop, and mobile platforms.
+Applying deep learning models and computer vision techniques to manga translation has become a popular topic in academic research. However, practical applications for manga translation are limited and still present several drawbacks for professional translators. Manga Translator \cite{manga_translator}, Comic Translate \cite{comic_translate}, and Mantra Engine \cite{mantra_engine} are representative applications developed for manga translation, corresponding respectively to web, desktop, and mobile platforms.\\
 
-All of these applications offer fast processing with real-time or near–real-time performance, making them suitable for personal use or beginners. Some systems also allow users to select different translation models or support multiple languages, font styles, and image formats. Nevertheless, they share a critical limitation: none of them provide an editing function for the translated text.
+All of these applications offer fast processing with real-time or near–real-time performance, making them suitable for personal use or beginners. Some systems also allow users to select different translation models or support multiple languages, font styles, and image formats. Nevertheless, they share a critical limitation: none of them provide an editing function for the translated text.\\
 
-In addition, Comic Translate \cite{comic_translate} requires users to obtain and configure their own API keys, which can be challenging for non-technical users. The mobile platform, Mantra Engine \cite{mantra_engine}, produces visually unrefined text overlays that often exceed the boundaries of speech bubbles, negatively affecting readability and aesthetic quality.
+In addition, Comic Translate \cite{comic_translate} requires users to obtain and configure their own API keys, which can be challenging for non-technical users. The mobile platform, Mantra Engine \cite{mantra_engine}, produces visually unrefined text overlays that often exceed the boundaries of speech bubbles, negatively affecting readability and aesthetic quality.\\
 
 Therefore, our motivation is to develop a platform specifically designed for professional manga translators that provides editing functionality at each stage of the manga translation pipeline. Rather than fully replacing human translators, the application aims to support and enhance manual translation workflows by integrating existing deep learning models and computer vision techniques.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\textwidth]{img/Data-Page-3.png}
+    \includegraphics[width=1\textwidth]{img/Data-Page-3.pdf}
     \caption{Manual manga translation workflow}
     \label{fig:manual_workflow}
 

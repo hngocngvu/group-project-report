@@ -25,7 +25,7 @@ The model follows a \textbf{Vision Encoder-Decoder} architecture with approximat
     After cross-attention integrates visual information with textual context, the final hidden state passes through a linear projection (LM Head) that maps to the vocabulary of 4,718 Japanese characters, followed by softmax to produce probability distributions over the next character.
 \end{enumerate}
 
-where $Q$ (Query) denotes the textual context from decoder states $H_{\text{dec}}$;
+Where $Q$ (Query) denotes the textual context from decoder states $H_{\text{dec}}$;
 $K$ (Key) and $V$ (Value) denote visual features from encoder states $H_{\text{enc}}$;
 $W_Q$, $W_K$, and $W_V$ are learnable projection matrices; and
 $d_k$ is the key dimensionality used for gradient stabilization.
