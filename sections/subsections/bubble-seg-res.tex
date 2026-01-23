@@ -3,12 +3,12 @@ Table \ref{tab:yolo-det-per} and Table \ref{tab:yolo-seg-per} illustrate boundin
 \centering
 \begin{tabular}{lcccc}
 \toprule
-Model\ /Metrics & YOLOv8n & YOLOv8s & YOLOv11n & YOLOv11s \\
+Model & Precision & Recall & mAP50 & mAP50-95 \\
 \midrule
-Precision & 0.973 & 0.974 & 0.974 & \textbf{0.977} \\
-Recall & 0.978 & \textbf{0.982} & 0.977 & 0.978\\
-mAP50 & 0.992 & \textbf{0.993} & 0.992 & \textbf{0.993}\\
-mAP50-95 & 0.97 & 0.974 & \textbf{0.979} & 0.975\\
+YOLOv8n & 0.973 & 0.978 & 0.992 & 0.97 \\
+YOLOv8s & 0.974 & \textbf{0.982} & \textbf{0.993} & 0.974 \\
+YOLOv11n & 0.974 & 0.977 & 0.992 & \textbf{0.979} \\
+YOLOv11s & \textbf{0.977} & 0.978 & \textbf{0.993} & 0.975 \\
 \bottomrule
 \end{tabular}
 \caption{Bubble bounding box detection performance of YOLO models}
@@ -21,12 +21,12 @@ mAP50-95 & 0.97 & 0.974 & \textbf{0.979} & 0.975\\
 \centering
 \begin{tabular}{lcccc}
 \toprule
-Model\ /Metrics & YOLOv8n & YOLOv8s & YOLOv11n & YOLOv11s \\
+Model & Precision & Recall & mAP50 & mAP50-95 \\
 \midrule
-Precision & 0.974 & 0.975 & 0.975 & \textbf{0.978} \\
-Recall & 0.979 & \textbf{0.983} & 0.979 & 0.979\\
-mAP50 & 0.993 & 0.993 & 0.993 & 0.993\\
-mAP50-95 & 0.916 & \textbf{0.922} & 0.92 & 0.921\\
+YOLOv8n & 0.974 & 0.979 & 0.993 & 0.916 \\
+YOLOv8s & 0.975 & \textbf{0.983} & 0.993 & \textbf{0.922} \\
+YOLOv11n & 0.975 & 0.979 & 0.993 & 0.92 \\
+YOLOv11s & \textbf{0.978} & 0.979 & 0.993 & 0.921 \\
 \bottomrule
 \end{tabular}
 \caption{Bubble mask segmentation performance of YOLO models}
@@ -37,12 +37,13 @@ mAP50-95 & 0.916 & \textbf{0.922} & 0.92 & 0.921\\
 
 \begin{table}[H]
 \centering
-\begin{tabular}{lccc}
+\begin{tabular}{lcc}
 \toprule
-Method\ /Metrics & Ngo et al. (2012) \cite{ngo2012panel} & Rigaud et al. (2017) \cite{rigaud2017textindependent} & Dubray et al. (2019) \cite{dubray2019deepcnn} \\
+Method & Precision & Recall \\
 \midrule
-Precision & 0.9467 & 0.6227 & 0.9558 \\
-Recall & 0.7553  & 0.6292 & 0.9404\\
+Ngo et al. (2012) \cite{ngo2012panel} & 0.9467 & 0.7553 \\
+Rigaud et al. (2017) \cite{rigaud2017textindependent} & 0.6227 & 0.6292 \\
+Dubray et al. (2019) \cite{dubray2019deepcnn} & 0.9558 & 0.9404 \\
 \bottomrule
 \end{tabular}
 \caption{Bubble mask segmentation performance of other methods}
