@@ -2,9 +2,9 @@ Preserving the correct reading order is critical for the translation to be coher
 
 \subsubsection{Double-page Processing}
 
-Standard manga processing pipelines often fail on double-page spreads (two facing pages scanned as a single image), as the layout analysis algorithms assume a single flow of panels. We address this by detecting spreads via aspect ratio analysis. If the image width dominates the height ($W/H > 1.0$), we trigger a specialized split-processing routine.
+Standard manga processing pipelines often fail on double-page spreads (two facing pages scanned as a single image), as the layout analysis algorithms assume a single flow of panels. We address this by detecting spreads via aspect ratio analysis. If the image width dominates the height ($W/H > 1.0$), we trigger a specialized split-processing routine.\\
 
-The image is split vertically at $x_{\text{mid}} = W/2$ into two sub-images: the Right Page ($I_R$) and the Left Page ($I_L$). In adherence to the Japanese reading direction, $I_R$ represents the earlier page in the narrative sequence and is processed first.
+The image is split vertically at $x_{\text{mid}} = W/2$ into two sub-images: the Right Page ($I_R$) and the Left Page ($I_L$). In adherence to the Japanese reading direction, $I_R$ represents the earlier page in the narrative sequence and is processed first.\\
 
 After independent segmentation inference on $I_R$ and $I_L$, the results must be mapped back to the original full-page coordinate system.
 \begin{itemize}
