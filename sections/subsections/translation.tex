@@ -6,7 +6,7 @@ For single sentence translation, we utilised the pretrained 'elan-mt-ja-en' mode
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.7\linewidth]{img/marian.png}
+  \includegraphics[width=0.7\linewidth]{img/marian.pdf}
   \caption{MarianMT Architecture}
   \label{fig:marian-mt}
 \end{figure}
@@ -40,7 +40,7 @@ The tiny variant reduces the model depth and hidden dimensions, achieving approx
 
 \subsubsection{Context-aware translation}
 
-Language constructs in Japanese are highly context-dependent, often omitting subjects or objects (pro-drop) known from history. While traditional NMT architectures can benefit from context, they typically require rigid input formats (e.g., simple concatenation) and struggle to incorporate metadata such as the identity of the speaker, visual scene tags or page descriptions.
+Language constructs in Japanese are highly context-dependent, often omitting subjects or objects (pro-drop) known from history. While traditional NMT architectures can benefit from context, they typically require rigid input formats \cite{hinami2021towards} (e.g., simple concatenation) and struggle to incorporate metadata such as the identity of the speaker, visual scene tags or page descriptions.
 
 % TODO: THIS PART ALONE NEEDS TONS OF CITATION (TT)
 
