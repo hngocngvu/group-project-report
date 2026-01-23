@@ -40,7 +40,7 @@
     % -----------------------------------------------------------
     
     % Left Vertical Flow
-    \draw[->] (img1) -- node[right, font=\small] {1. Instance Segment} (img2);
+    \draw[->] (img1) -- node[right, font=\small] {1. Bubble Segmentation} (img2);
     \draw[->] (img2) -- node[right, font=\small] {3. Convex Defect}(img3);
 
     % Horizontal Connections
@@ -48,7 +48,7 @@
     \draw[->] (img3) -- node[above, font=\small] {4. OCR} (img4);
 
     % Right Vertical Flow (Sandwich)
-    \draw[->] (img5) -- node[right, font=\small] {6. Fill Text}(img6); % Down
+    \draw[->] (img5) -- node[right, font=\small] {6. Typesetting}(img6); % Down
     \draw[->] (img4) -- node[right, font=\small] {5. Translation}(img6); % Up
 
     \end{tikzpicture}
