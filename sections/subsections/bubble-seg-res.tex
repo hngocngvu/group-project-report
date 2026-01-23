@@ -21,35 +21,22 @@ YOLOv11s & \textbf{0.977} & 0.978 & \textbf{0.993} & 0.975 \\
 \centering
 \begin{tabular}{lcccc}
 \toprule
-Model & Precision & Recall & mAP50 & mAP50-95 \\
+Method & Precision & Recall & mAP50 & mAP50-95 \\
 \midrule
 YOLOv8n & 0.974 & 0.979 & 0.993 & 0.916 \\
 YOLOv8s & 0.975 & \textbf{0.983} & 0.993 & \textbf{0.922} \\
 YOLOv11n & 0.975 & 0.979 & 0.993 & 0.92 \\
 YOLOv11s & \textbf{0.978} & 0.979 & 0.993 & 0.921 \\
-\bottomrule
-\end{tabular}
-\caption{Bubble mask segmentation performance of YOLO models}
-\label{tab:yolo-seg-per}
-\end{table}
-
-\vspace{0.5cm}
-
-\begin{table}[H]
-\centering
-\begin{tabular}{lcc}
-\toprule
-Method & Precision & Recall \\
 \midrule
-Ngo et al. (2012) \cite{ngo2012panel} & 0.9467 & 0.7553 \\
-Rigaud et al. (2017) \cite{rigaud2017textindependent} & 0.6227 & 0.6292 \\
-Dubray et al. (2019) \cite{dubray2019deepcnn} & 0.9558 & 0.9404 \\
+Ngo et al. (2012) \cite{ngo2012panel} & 0.9467 & 0.7553 & - & - \\
+Rigaud et al. (2017) \cite{rigaud2017textindependent} & 0.6227 & 0.6292 & - & - \\
+Dubray et al. (2019) \cite{dubray2019deepcnn} & 0.9558 & 0.9404 & - & - \\
 \bottomrule
 \end{tabular}
-\caption{Bubble mask segmentation performance of other methods}
-\label{tab:pub-res}
+\caption{Bubble mask segmentation performance comparison}
+\label{tab:mask-seg-comparison}
 \end{table}
 
 The results indicate that all four models achieve comparable performance, but overall, YOLOv8s demonstrates the most balanced and consistent performance across both bounding box detection and instance mask segmentation tasks.
-Although our modern segmentation models show stronger performance than the methods reported in Table \ref{tab:pub-res}, this comparison should be interpreted with caution, 
+Although our modern segmentation models show stronger performance than the methods reported in the comparison table, this should be interpreted with caution, 
 as the evaluated methods are trained and tested on different datasets and target different segmentation objectives.
