@@ -9,6 +9,10 @@ YOLOv8n & 0.973 & 0.978 & 0.992 & 0.97 \\
 YOLOv8s & 0.974 & \textbf{0.982} & \textbf{0.993} & 0.974 \\
 YOLOv11n & 0.974 & 0.977 & 0.992 & \textbf{0.979} \\
 YOLOv11s & \textbf{0.977} & 0.978 & \textbf{0.993} & 0.975 \\
+\midrule
+Liu et al. \cite{Liu2015ClumpSplitting} & 0.901 & 0.869 & - & - \\
+Rigaud et al. \cite{rigaud2017textindependent} & 0.7221 & 0.8331 & - & - \\
+
 \bottomrule
 \end{tabular}
 \caption{Bubble bounding box detection performance of YOLO models}
@@ -37,6 +41,6 @@ Dubray et al. (2019) \cite{dubray2019deepcnn} & 0.9558 & 0.9404 & - & - \\
 \label{tab:mask-seg-comparison}
 \end{table}
 
-The results indicate that all four models achieve comparable performance, but overall, YOLOv8s demonstrates the most balanced and consistent performance across both bounding box detection and instance mask segmentation tasks.
+The results indicate that all four models achieve comparable performance, but overall, YOLOv8s demonstrates the most balanced and consistent performance across both bounding box detection and instance mask segmentation.
 Although our modern segmentation models show stronger performance than the methods reported in the comparison table, this should be interpreted with caution, 
 as the evaluated methods are trained and tested on different datasets and target different segmentation objectives.
