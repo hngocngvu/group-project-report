@@ -1,33 +1,34 @@
 \begin{table}[H]
 \centering
-\caption{Performance Comparison of Elan, Qwen2.5-0.5B, and Qwen1.5-1.5B Models}
+\caption{Performance Comparison of GoogleTranslator, Elan, Qwen2.5-0.5B, and Qwen1.5-1.5B Models}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lcccccc}
 \toprule
 \textbf{Model} & \textbf{BLEU} & \textbf{SacreBLEU} & \textbf{chrf} & \textbf{chrF++} & \textbf{BERTScore} & \textbf{COMET} \\
+GoogleTranslator-ja-en & 0.0948 & 0.1598 & 0.3534 & 0.3262 & 0.5831 & 0.7378\\
 \midrule
 % Elan Models
-Elan Base & 2.61 & 7.19 & 21.23 & 18.48 & 55.86 & 0.591 \\
-Elan BT & 4.7 & 9.78 & 26.49 & 24.41 & 57.83 & 0.6475 \\
-Elan Tiny (default) & 3.86 & 8.95 & 25.51 & 23.44 & 58.05 & 0.6374 \\
+Elan Base & 0.0261 & 0.0719 & 0.2123 & 0.1848 & 0.5586 & 0.591 \\
+Elan BT & 0.047 & 0.0978 & 0.2649 & 0.2441 & 0.5783 & 0.6475 \\
+Elan Tiny (default) & 0.0386 & 0.0895 & 0.2551 & 0.2344 & 0.5805 & 0.6374 \\
 \midrule
 % 0.5B Models (Renamed to Qwen2.5-0.5B-Instruct)
-Qwen2.5-0.5B-Instruct (finetuned, context\_window = 5) & 4.97 & 8.39 & 27.47 & 25.81 & 58.13 & 0.6413 \\
-Qwen2.5-0.5B-Instruct (finetuned, context\_window = 4) & 5.56 & 9.10 & 28.36 & 26.63 & 58.20 & 0.6445 \\
-Qwen2.5-0.5B-Instruct (finetuned, context\_window = 3) & 4.82 & 8.36 & 28.36 & 26.62 & 58.22 & 0.6354 \\
-Qwen2.5-0.5B-Instruct (finetuned, context\_window = 2) & 4.97 & 8.43 & 27.89 & 26.18 & 58.02 & 0.6396 \\
-Qwen2.5-0.5B-Instruct (finetuned, context\_window = 1) & 4.98 & 7.97 & 27.88 & 26.08 & 57.82 & 0.6319 \\
+Qwen2.5-0.5B-Instruct (finetuned, context\_window = 5) & 0.0497 & 0.0839 & 0.2747 & 0.2581 & 0.5813 & 0.6413 \\
+Qwen2.5-0.5B-Instruct (finetuned, context\_window = 4) & 0.0556 & 0.0910 & 0.2836 & 0.2663 & 0.5820 & 0.6445 \\
+Qwen2.5-0.5B-Instruct (finetuned, context\_window = 3) & 0.0482 & 0.0836 & 0.2836 & 0.2662 & 0.5822 & 0.6354 \\
+Qwen2.5-0.5B-Instruct (finetuned, context\_window = 2) & 0.0497 & 0.0843 & 0.2789 & 0.2618 & 0.5802 & 0.6396 \\
+Qwen2.5-0.5B-Instruct (finetuned, context\_window = 1) & 0.0498 & 0.0797 & 0.2788 & 0.2608 & 0.5782 & 0.6319 \\
 \midrule
 % 1.5B Models (Renamed to Qwen1.5-1.5B-Instruct)
-Qwen1.5-1.5B-Instruct (finetuned, context\_window = 5) & 6.18 & 9.8 & 29.05 & 27.21 & 60.42 & 0.6813 \\
-Qwen1.5-1.5B-Instruct (finetuned, context\_window = 4) & 5.282 & 9.86 & 28.68 & 26.85 & 60.27 & 0.683 \\
-Qwen1.5-1.5B-Instruct (finetuned, context\_window = 3) & 6.21 & 10.14 & 29.39 & 27.49 & 60.3 & 0.6899 \\
-Qwen1.5-1.5B-Instruct (finetuned, context\_window = 2) & 6.23 & 9.95 & 29.44 & 27.56 & 60.44 & 0.6905 \\
-Qwen1.5-1.5B-Instruct (finetuned, context\_window = 1) & 5.98 & 10.21 & 29.03 & 27.19 & 60.44 & 0.6914 \\
+Qwen1.5-1.5B-Instruct (finetuned, context\_window = 5) & 0.0618 & 0.098 & 0.2905 & 0.2721 & 0.6042 & 0.6813 \\
+Qwen1.5-1.5B-Instruct (finetuned, context\_window = 4) & 0.05282 & 0.0986 & 0.2868 & 0.2685 & 0.6027 & 0.683 \\
+Qwen1.5-1.5B-Instruct (finetuned, context\_window = 3) & 0.0621 & 0.1014 & 0.2939 & 0.2749 & 0.603 & 0.6899 \\
+Qwen1.5-1.5B-Instruct (finetuned, context\_window = 2) & 0.0623 & 0.0995 & 0.2944 & 0.2756 & 0.6044 & 0.6905 \\
+Qwen1.5-1.5B-Instruct (finetuned, context\_window = 1) & 0.0598 & 0.1021 & 0.2903 & 0.2719 & 0.6044 & 0.6914 \\
 \midrule
-2+2 \cite{hinami2021towards} & 21.14 & - & - & - & - & 0.779 \\
-Scene-NMT \cite{hinami2021towards} &  21.02 & - & - & - & - &  0.782 \\
-Scene-aware NMT \cite{kaino2024utilizing} & 21.46 & - & - & - & - & 0.79 \\
+2+2 \cite{hinami2021towards} & 0.2114 & - & - & - & - & 0.779 \\
+Scene-NMT \cite{hinami2021towards} &  0.2102 & - & - & - & - &  0.782 \\
+Scene-aware NMT \cite{kaino2024utilizing} & 0.2146 & - & - & - & - & 0.79 \\
 \bottomrule
 
 \end{tabular}%
@@ -35,4 +36,5 @@ Scene-aware NMT \cite{kaino2024utilizing} & 21.46 & - & - & - & - & 0.79 \\
 \end{table}
 
 Obtained results from Towards Fully Automated Manga Translation \cite{hinami2021towards} were re-implemented by Kaino et al. \cite{kaino2024utilizing} in their publication "Utilizing Longer Context than Speech Bubbles in Automated Manga Translation".
+We observe a performance gap compared to previously reported results. We attribute this mainly to differences in data distribution and the absence of domain-specific tuning, which we leave for future work.
 
