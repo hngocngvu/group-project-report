@@ -141,7 +141,7 @@ To train the model to utilise context robustly without losing its general transl
 \vspace{1em}
 \textbf{Sentence to Sentence Sources}
 
-We combined large-scale sentence-level corpora including \textbf{JESC} which contains approximately 2.8 million Japanese-English sentence pairs after filtering. Being a crawled subtitle dataset, JESC is inherently noisier and may contain loose localizations or alignment errors typical of crowdsourced data. However, its inclusion is critical as it provides the vast volume of casual, colloquial speech patterns ($\approx$ 2.8M pairs) essential for manga translation, which formal datasets lack.
+We combined large-scale sentence-level corpora including \textbf{JESC} \cite{pryzant-etal-2018-jesc} which contains approximately 2.8 million Japanese-English sentence pairs after filtering. Being a crawled subtitle dataset, JESC is inherently noisier and may contain loose localizations or alignment errors typical of crowdsourced data. However, its inclusion is critical as it provides the vast volume of casual, colloquial speech patterns ($\approx$ 2.8M pairs) essential for manga translation, which formal datasets lack.
 
 To counterbalance the noise from \textbf{JESC}, we incorporated \textbf{Flores+}, \textbf{NTREX}, and \textbf{Opus-100} (train split) as high-quality anchors. \textbf{Flores+} and \textbf{NTREX} are gold-standard benchmarks professionally translated to evaluate machine translation systems, ensuring high grammatical correctness and semantic fidelity. \textbf{Opus-100}, while larger and more diverse, serves as a strong general-domain baseline. Integrating these datasets prevents the model from overfitting to the loose, fragmented style of subtitles, grounding it in proper linguistic structures.\\
 
