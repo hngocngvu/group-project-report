@@ -119,6 +119,7 @@ Well, Company A's business is related to software and he worked in the manufactu
 \paragraph{Chat template formatting}
 
 To ensure with the instruction-tuned Qwen2.5 base model, all training samples and inference inputs are formatted using the ChatML template. This template structures conversations with special tokens that mark the beginning and end of each message along with role identifiers.\\
+
 \vspace{1em}
 \textbf{Template Structure}
 
@@ -136,12 +137,14 @@ During training and inference, the tokenizer will automatically convert the JSON
 \paragraph{Training dataset construction}
 
 To train the model to utilise context robustly without losing its general translation capabilities, we constructed a unified instruction-tuning dataset by merging two distinct Japanese to English dataset sources.\\
+
 \vspace{1em}
 \textbf{Sentence to Sentence Sources}
 
 We combined large-scale sentence-level corpora including \textbf{JESC} which contains approximately 2.8 million Japanese-English sentence pairs after filtering. Being a crawled subtitle dataset, JESC is inherently noisier and may contain loose localizations or alignment errors typical of crowdsourced data. However, its inclusion is critical as it provides the vast volume of casual, colloquial speech patterns ($\approx$ 2.8M pairs) essential for manga translation, which formal datasets lack.
 
 To counterbalance the noise from \textbf{JESC}, we incorporated \textbf{Flores+}, \textbf{NTREX}, and \textbf{Opus-100} (train split) as high-quality anchors. \textbf{Flores+} and \textbf{NTREX} are gold-standard benchmarks professionally translated to evaluate machine translation systems, ensuring high grammatical correctness and semantic fidelity. \textbf{Opus-100}, while larger and more diverse, serves as a strong general-domain baseline. Integrating these datasets prevents the model from overfitting to the loose, fragmented style of subtitles, grounding it in proper linguistic structures.\\
+
 \vspace{1em}
 
 \textbf{Context Rich Source}
@@ -156,4 +159,4 @@ The final training set mixes these two distributions. This hybrid approach teach
 
 We fine-tune the \textbf{Qwen2.5-1.5B-Instruct} on the constructed dataset using LoRA (Low Rank Adaptation). During training with LoRA, we freezes the pre-trained model's weights and inject trainable rank decomposition matrices into one or several into specified layers of the model. This technique can significantly reduce the number of trainable parameter and VRAM requirements while being competitive to full supervised fine-tuning when trained on our dataset ($\approx$ 3.3M samples).
 
-The training details of our model can be found in Appendix.
+The training details of our model can be found in Appendix (\ref{appendix}).

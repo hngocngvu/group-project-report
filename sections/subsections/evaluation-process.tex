@@ -63,7 +63,9 @@ The coefficient ranges from $-1$ (perfect reversal) to $+1$ (perfect match). A h
 \textbf{Exact Match Rate (EMR)}
 
 EMR measures the strict correctness of the layout analysis pipeline. A page is considered an exact match if and only if the entire sequence of predicted bubbles corresponds perfectly to the ground truth reading order ($\tau = 1$).
-\[ \text{EMR} = \frac{1}{N} \sum_{i=1}^N \mathbb{1}(\tau_i = 1) \] 
+\[
+\text{EMR} = \frac{1}{N} \sum_{i=1}^N \mathbb{1}\{\tau_i = 1\}
+\]
 Where $N$ is the total number of pages evaluated and $\mathbb{1}$ is the indicator function.
 
 \vspace{1em}

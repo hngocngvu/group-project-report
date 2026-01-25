@@ -1,0 +1,38 @@
+\begin{table}[H]
+\centering
+\caption{Performance Comparison of Elan, Qwen2.5-0.5B, and Qwen1.5-1.5B Models}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{Model} & \textbf{BLEU} & \textbf{SacreBLEU} & \textbf{chrf} & \textbf{chrF++} & \textbf{BERTScore} & \textbf{COMET} \\
+\midrule
+% Elan Models
+Elan Base & 2.61 & 7.19 & 21.23 & 18.48 & 55.86 & 0.591 \\
+Elan BT & 4.7 & 9.78 & 26.49 & 24.41 & 57.83 & 0.6475 \\
+Elan Tiny (default) & 3.86 & 8.95 & 25.51 & 23.44 & 58.05 & 0.6374 \\
+\midrule
+% 0.5B Models (Renamed to Qwen2.5-0.5B-Instruct)
+Qwen2.5-0.5B-Instruct (finetuned, context\_window = 5) & 4.97 & 8.39 & 27.47 & 25.81 & 58.13 & 0.6413 \\
+Qwen2.5-0.5B-Instruct (finetuned, context\_window = 4) & 5.56 & 9.10 & 28.36 & 26.63 & 58.20 & 0.6445 \\
+Qwen2.5-0.5B-Instruct (finetuned, context\_window = 3) & 4.82 & 8.36 & 28.36 & 26.62 & 58.22 & 0.6354 \\
+Qwen2.5-0.5B-Instruct (finetuned, context\_window = 2) & 4.97 & 8.43 & 27.89 & 26.18 & 58.02 & 0.6396 \\
+Qwen2.5-0.5B-Instruct (finetuned, context\_window = 1) & 4.98 & 7.97 & 27.88 & 26.08 & 57.82 & 0.6319 \\
+\midrule
+% 1.5B Models (Renamed to Qwen1.5-1.5B-Instruct)
+Qwen1.5-1.5B-Instruct (finetuned, context\_window = 5) & 6.18 & 9.8 & 29.05 & 27.21 & 60.42 & 0.6813 \\
+Qwen1.5-1.5B-Instruct (finetuned, context\_window = 4) & 5.282 & 9.86 & 28.68 & 26.85 & 60.27 & 0.683 \\
+Qwen1.5-1.5B-Instruct (finetuned, context\_window = 3) & 6.21 & 10.14 & 29.39 & 27.49 & 60.3 & 0.6899 \\
+Qwen1.5-1.5B-Instruct (finetuned, context\_window = 2) & 6.23 & 9.95 & 29.44 & 27.56 & 60.44 & 0.6905 \\
+Qwen1.5-1.5B-Instruct (finetuned, context\_window = 1) & 5.98 & 10.21 & 29.03 & 27.19 & 60.44 & 0.6914 \\
+\midrule
+2+2 \cite{hinami2021towards} & 21.14 & - & - & - & - & 0.779 \\
+Scene-NMT \cite{hinami2021towards} &  21.02 & - & - & - & - &  0.782 \\
+Scene-aware NMT \cite{kaino2024utilizing} & 21.46 & - & - & - & - & 0.79 \\
+\bottomrule
+
+\end{tabular}%
+}
+\end{table}
+
+Obtained results from Towards Fully Automated Manga Translation \cite{hinami2021towards} were re-implemented by Kaino et al. \cite{kaino2024utilizing} in their publication "Utilizing Longer Context than Speech Bubbles in Automated Manga Translation".
+
