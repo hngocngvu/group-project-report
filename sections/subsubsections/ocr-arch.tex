@@ -1,9 +1,9 @@
 We utilize the official pre-trained weights of the \texttt{manga-ocr-base} model. Training a robust manga OCR model from scratch requires generating millions of synthetic image-text pairs and significant computational resources to converge. By leveraging the pre-trained model, which has already learned high-level feature representations from extensive synthetic datasets (based on CC-100 corpus and Manga109), we achieve state-of-the-art performance without the overhead of training.
 The architecture of the Manga-OCR model is illustrated in Figure \ref{fig:manga-ocr-architecture}.
 
-\begin{figure}[H]
+\begin{figure}[!ht]
     \centering
-    \includegraphics[width=\textwidth]{img/manga-ocr-pipeline.pdf}
+    \includegraphics[width=0.9\textwidth]{img/manga-ocr-pipeline.pdf}
     \caption{Manga-OCR Model Architecture}
     \label{fig:manga-ocr-architecture}
 \end{figure}
