@@ -52,5 +52,8 @@ Scene-aware NMT \cite{kaino2024utilizing} & \textbf{0.2146} & - & - & - & - & \t
 \end{table}
 
 Obtained results from Towards Fully Automated Manga Translation \cite{hinami2021towards} were re-implemented by Kaino et al. \cite{kaino2024utilizing} in their publication "Utilizing Longer Context than Speech Bubbles in Automated Manga Translation".
-We observe a performance gap compared to previously reported results. We attribute this mainly to differences in data distribution and the absence of domain-specific tuning, which we leave for future work.
+We observe a performance gap compared to previously reported results. We attribute this mainly to differences in data distribution and the absence of domain-specific tuning, which we leave for future work.\\
 
+Within our fine-tuned models, the Qwen 2.5-1.5B model consistently outperforms the 0.5B variant by a significant margin across all metrics (+0.05 COMET on average). This confirms that parameter scale is a decisive factor in capturing the nuances of Japanese-English translation. 
+Contrary to the expectation that larger context window is better, we observe that performance for our models peaks at smaller context windows. For the 1.5B model, the BLEU Score is highest at context\_window = 1 (immediate neighbors). Performance degrades at larger windows (4-5), suggesting that distant bubbles may introduce noise that distracts the model rather than aiding translation.
+For our 0.5B model, we can see that the BLEU Score increases as the context window becomes larger and reaches its diminishing return at context\_window = 4 (BLEU Score = 0.0556)
