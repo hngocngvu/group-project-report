@@ -1,3 +1,11 @@
-The AppData class is an object that holds the global state, including \texttt{pil\_image}, \texttt{image\_path}, and a list of \texttt{Bubble} objects. This allows each component to access the image the moment it is loaded in the Segmentation module.\\
+The application state is managed through several data structures.
+The ImageProject class acts as the storage for a specific file. It keeps tracks of the file path, the processing status (queued, processing, ready, or error), and contains a list of detected objects (bubbles).
+The BubbleData class stores individual text regions. It wraps the logical and geometric data required for both the UI and the backend typesetter:
 
-The \texttt{Bubble} class is an object that holds specific detection instances. It holds the geometry of a bubble including the segmentation mask in \texttt{QPolygonF} and the bounding box \texttt{bbox}. The text recognized by the OCR tab and the corresponding English translation are also stored here. In the UI, these data objects are linked to visual elements using Qt's UserRole data storage, allowing direct object retrieval. 
+\begin{enumerate}
+    \item Geometry: The polygon (QPolygonF) for UI rendering and the bbox for cropping.
+    \item Masks: The raw\_mask required for the painting process.
+    \item Text: Stores both the ocr\_text (source) and trans\_text (target).
+\end{enumerate}
+
+In the graphical interface, the QGraphicsPolygonItem objects are linked to their corresponding BubbleData instances using Qt's item data storage (setData). This linkage allows the system to retrieve the underlying data object immediately when a user interacts with a visual element on the GUI scene.

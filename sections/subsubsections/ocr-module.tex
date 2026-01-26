@@ -1,4 +1,5 @@
-The \texttt{OCRTab} handles text extraction using the \texttt{MangaOCR} model from \texttt{manga-ocr}. 
-The system iterates through the valid \texttt{Bubble} objects, using their stored bounding boxes to crop specific regions from the source image for inference. 
-The results are displayed in a \texttt{QListWidget}. To prevent UI clutter, the preview text is truncated to 20 characters with ellipses. 
-A \texttt{QTextEdit} widget allows the user to correct the OCR output. The application managed the event loop by blocking signals during updates to ensure that the edits in the textbox immediately update both the \texttt{Bubble} data object and the visual text overlay on the canvas without causing recursive event loops. 
+The BatchProcessor manages the automated pipeline. Once a file enters the processing state, it undergoes three sequential steps:
+First, the Segmentation stage is where the BubbleSegmenter (wrapping Ultralytics YOLO models) detects text bubbles. The system supports dynamic model switching via the application menu, managed by the ModelManager which downloads weights from HuggingFace if missing.
+Next, in the OCR stage,  detected regions are cropped based on their bounding boxes and passed to the MangaOCRModel for text extraction.
+Finally, in the translation step, extracted text is passed to the ElanMtJaEnTranslator. This model can also be swapped dynamically between varying sizes.
+

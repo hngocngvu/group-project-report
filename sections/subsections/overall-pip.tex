@@ -1,3 +1,5 @@
+This section evaluates the fully integrated system on the complete OpenMantra dataset (212 pages). Following the protocol defined in Section \ref{post-yolo}, we assess the system's ability to detect, order, and translate text in a complete workflow. The evaluation uses a strict containment threshold ($\ge 0.8$) to match detected bubble and ground truth and penalizes missed detections with empty strings to ensure robust metrics across downstream task such as OCR and translation.
+
 \begin{table}[H]
 \centering
 \caption{Detection and layout analysis results}
@@ -17,24 +19,35 @@ Exact Match Rate        & 0.6753 \\
 \end{tabular}
 \end{table}
 
+The high Kendall's Tau (0.8859) indicates that the system reliably recovers the correct reading flow, which is critical for context-aware translation.
 
 \begin{table}[H]
 \centering
 \caption{End-to-end translation performance}
 %\label{tab:end2end_translation}
-\begin{tabular}{cccccccc}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lccccccc}
 \toprule
-\textbf{Trans. CER} & \textbf{BLEU} & \textbf{SacreBLEU} & \textbf{chrF} & \textbf{chrF++} & \textbf{BERTScore} & \textbf{COMET} \\
+\textbf{Translation models} & \textbf{BLEU} & \textbf{SacreBLEU} & \textbf{chrF} & \textbf{chrF++} & \textbf{BERTScore} & \textbf{COMET} \\
 \midrule
-0.8379 & 0.0380 & 0.0764 & 0.2527 & 0.2322 & 0.5605 & 0.6288 \\
+Elan bt & 0.046 & 0.0832 & 0.261 & 0.2401 & 0.5542 & 0.641 \\
+Qwen2.5-0.5B & 0.0536& 0.0885& 0.2815& 0.2641& 0.5666& 0.6394\\
+(finetuned, context\_window = 4) & & & & & & & \\
+Qwen2.5-1.5B & 0.0534& 0.0924 & 0.2779 &0.2573& 0.5788&  0.6896\\
+(finetuned, context\_window = 2) & & & & & & & \\
 \bottomrule
 \end{tabular}
+}
 \end{table}
+
+We benchmarked the fully integrated pipeline using three representative translation models selected from different architectures to demonstrate the trade-offs between model size and quality. Specifically, we evaluated the best-performing configuration for each model family: Mitsua/elan-mt-bt-ja-en (Baseline), Qwen2.5-0.5B-Instruct (Fine-tuned, context\_window=4), and Qwen2.5-1.5B-Instruct (Fine-tuned, context\_window=2).
+
 
 \begin{table}[H]
 \centering
 \caption{Error propagation analysis comparing translation performance}
 %\label{tab:error_propagation}
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{lccccccc}
 \toprule
 \textbf{Input Type} & \textbf{Trans. CER} & \textbf{BLEU} & \textbf{SacreBLEU} & \textbf{chrF} & \textbf{chrF++} & \textbf{BERTScore} & \textbf{COMET} \\
@@ -45,6 +58,7 @@ GT Input
 & 0.8648 & 0.0388 & 0.0852 & 0.2539 & 0.2337 & 0.5591 & -- \\
 \bottomrule
 \end{tabular}
+}
 \end{table}
 
 
