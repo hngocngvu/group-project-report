@@ -1,29 +1,51 @@
 \begin{table}[H]
 \centering
-\caption{End-to-end Pipeline Evaluation results}
-\label{tab:results}
-
-\setlength{\tabcolsep}{8pt}
-\renewcommand{\arraystretch}{1.3}
-
-\begin{tabular}{cc}
+\caption{Detection and layout analysis results}
+\label{tab:detection_layout}
+\begin{tabular}{l r}
 \toprule
-\textbf{Detection Statistics} & \textbf{Results} \\
-Total GT Bubbles & 1586 \\
-Matched Pairs &    1513 (95.40\%) \\
-   Missed Detections & 73 (4.60\%)\\
-   False Positives &   98 (6.18\%)\\
+\textbf{Metric} & \textbf{Value} \\
 \midrule
-\textbf{OCR Metrics (Matched Bubbles)} & \textbf{Results}\\
-CER & 0.1516 \\
+Total GT Bubbles        & 1586 \\
+Matched Pairs           & 1518 (95.71\%) \\
+Missed Detections       & 68 (4.29\%) \\
+False Positives         & 92 (5.80\%) \\
 \midrule
-\textbf{Ordering Metrics} & \textbf{Results}\\
-Kendall's Tau &     0.8844\\
-Exact Match Rate & 0.6649\\
-\midrule
-\textbf{Coverage Metrics} & \textbf{Results}\\
-GT Coverage &   0.9174\\
-Bubble Utilization & 0.9014\\
+Kendall's Tau (Ordering) & 0.8859 \\
+Exact Match Rate        & 0.6753 \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+
+\begin{table}[H]
+\centering
+\caption{End-to-end translation performance}
+%\label{tab:end2end_translation}
+\begin{tabular}{cccccccc}
+\toprule
+\textbf{Trans. CER} & \textbf{BLEU} & \textbf{SacreBLEU} & \textbf{chrF} & \textbf{chrF++} & \textbf{BERTScore} & \textbf{COMET} \\
+\midrule
+0.8379 & 0.0380 & 0.0764 & 0.2527 & 0.2322 & 0.5605 & 0.6288 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Error propagation analysis comparing translation performance}
+%\label{tab:error_propagation}
+\begin{tabular}{lccccccc}
+\toprule
+\textbf{Input Type} & \textbf{Trans. CER} & \textbf{BLEU} & \textbf{SacreBLEU} & \textbf{chrF} & \textbf{chrF++} & \textbf{BERTScore} & \textbf{COMET} \\
+\midrule
+OCR Input 
+& 0.8379 & 0.0380 & 0.0764 & 0.2527 & 0.2322 & 0.5605 & 0.6288 \\
+GT Input 
+& 0.8648 & 0.0388 & 0.0852 & 0.2539 & 0.2337 & 0.5591 & -- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+
