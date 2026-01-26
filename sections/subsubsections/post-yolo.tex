@@ -1,3 +1,4 @@
+\label{post-yolo}
 Although YOLO gives a pixel-precise mask for every panel, it still returns one mask when multiple balloons touch or overlap. Feeding a merged region to an OCR engine makes the text layout denser and usually causes a noticeable drop in recognition accuracy.\\
 
 To address this, we introduce a post-processing step that leverages convexity defects to detect and split merged speech bubbles. The key observation is that when two bubbles are connected, the resulting contour often exhibits at least two deep concave regions — known as convexity defects. These defects serve as reliable cues for where a cut should be made.

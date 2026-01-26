@@ -33,13 +33,24 @@ To evaluate sequential outputs, predicted bubbles are matched to Ground Truth (G
 
 We employ this \textbf{containment-based} approach rather than standard Intersection-over-Union (IoU) to address granularity differences between detection and annotation. While our segmentation model predicts the entire speech balloon boundary, ground truth annotations often segment individual lines or text blocks separately.\\
 
-This strategy enables a \textbf{Many-to-One} mapping capability. If a single predicted bubble contains multiple ground truth text regions (e.g., separate lines of text), all satisfying the containment threshold are assigned to that bubble. During evaluation, these matched text segments are sorted by their original index (preserving the reading order) and concatenated to form the complete reference text for that bubble.
+This strategy enables a \textbf{Many-to-One} mapping capability. Although the pipeline has already implemented bubble splitting logic (Section \ref{post-yolo}), this act as a fallback if the pipeline fails to split the bubbles that have two or more text region.
+If a single predicted bubble contains multiple ground truth text regions (e.g., separate lines of text), all satisfying the containment threshold are assigned to that bubble. During evaluation, these matched text segments are sorted by their original index (preserving the reading order) and concatenated to form the complete reference text for that bubble.
 
 \begin{itemize}
     \item \textbf{Matched Pairs:} Predicted bubbles containing valid GT texts are evaluated for OCR and Translation accuracy.
     \item \textbf{Missed Detections:} GT text regions that are not contained by any predicted bubble are treated as omitted. As described in the metrics section, these are assigned empty strings for downstream evaluation.
     \item \textbf{False Positives:} Predicted bubbles that contain no ground truth text are flagged as empty predictions.
 \end{itemize}
+
+The process is illustrated in Figure \ref{fig:reading-order}.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.05\textwidth]{img/order.png}
+    \caption{Illustration of the reading order and layout structure in manga pages}
+    \label{fig:reading-order}
+\end{figure}
+
+
 
 \vspace{1em}
 \textbf{Ordering Metrics:}
@@ -49,7 +60,7 @@ The layout analysis module is evaluated by comparing the sequence of matched GT 
 \vspace{1em}
 \textbf{Kendall's Rank Correlation Coefficient ($\tau_b$)}
 
-To assess the correctness of the predicted reading order, we employ Kendall's Tau-b ($\tau_b$), a robust correlation statistic that accounts for potential ties in the ranking sequence. Unlike simple accuracy, it penalizes the severity of ordering errors based on relative positions.
+To assess the correctness of the predicted reading order, we employ Kendall's Tau-b ($\tau_b$) \cite{kendall1938new}, a robust correlation statistic that accounts for potential ties in the ranking sequence. Unlike simple accuracy, it penalizes the severity of ordering errors based on relative positions.
 
 \[ \tau_b = \frac{C - D}{\sqrt{(C + D + T_x)(C + D + T_y)}} \]
 
