@@ -1,20 +1,5 @@
-For Japanese-to-English translation evaluation, we use COMETScore \cite{rei2022comet} and BERTScore \cite{zhang2020bertscore} as the primary metrics, with chrF \cite{popovic2015chrf} and $chrF++$ \cite{popovic-2017-chrf} as additional metrics for reference.\\
+For Japanese-to-English translation evaluation, we use BERTScore \cite{zhang2020bertscore} and COMETScore \cite{rei2022comet} as the primary metrics, with chrF \cite{popovic2015chrf} and $chrF++$ \cite{popovic-2017-chrf} as additional metrics for reference.\\
 \vspace{2em}
-
-    \textbf{COMETScore}
-
-    COMET (Crosslingual Optimized Metric for Evaluation of Translation) is a neural-based metric that leverages pre-trained multilingual language models to evaluate translation quality. Unlike traditional n-gram-based metrics, COMET learns to predict human judgments by fine-tuning on human evaluation datasets. We use COMET-22 (wmt22-comet-da), the Direct Assessment model from WMT 2022.
-
-    \begin{equation}
-        COMET = f_\theta(src, hyp, ref)
-    \end{equation}
-
-    Where $f_\theta$ defines a neural model (typically based on XLM-RoBERTa) that encodes the inputs,
-$src$ is the source text, $hyp$ is the hypothesis translation and $ref$ is the reference translation.
-    
-    COMET produces a quality score and has shown strong correlation with human judgments, being particularly effective for evaluating semantic adequacy.\\
-
-    \vspace{2em}
 
     \textbf{BERTScore}
 
@@ -28,6 +13,20 @@ $src$ is the source text, $hyp$ is the hypothesis translation and $ref$ is the r
 
     
     Each token is represented by its contextual embedding, and similarity is computed using cosine similarity.\\
+        \vspace{2em}
+
+    \textbf{COMETScore}
+
+    COMET (Crosslingual Optimized Metric for Evaluation of Translation) is a neural-based metric that leverages pre-trained multilingual language models to evaluate translation quality. Unlike traditional n-gram-based metrics, COMET learns to predict human judgments by fine-tuning on human evaluation datasets. We use COMET-22 (wmt22-comet-da), the Direct Assessment model from WMT 2022.
+
+    \begin{equation}
+        COMET = f_\theta(src, hyp, ref)
+    \end{equation}
+
+    Where $f_\theta$ defines a neural model (typically based on XLM-RoBERTa) that encodes the inputs,
+$src$ is the source text, $hyp$ is the hypothesis translation and $ref$ is the reference translation.
+    
+    COMET produces a quality score and has shown strong correlation with human judgments, being particularly effective for evaluating semantic adequacy.\\
     
     \vspace{2em}
 

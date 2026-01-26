@@ -19,7 +19,7 @@ This structure necessitates the \textbf{Many-to-One} mapping strategy used in ou
 \vspace{1em}
 \textbf{Sentence-Level Translation:}
 
-The baseline NMT models (ElanMT variants) and the LoRA \cite{hu2022lora} fine-tuned model were benchmarked on standard machine translation test sets: \textbf{Flores+} \cite{nllb-24}, \textbf{NTREX} \cite{federmann-etal-2022-ntrex}, and \textbf{Opus100} \cite{zhang-etal-2020-improving}. These datasets provide diverse linguistic coverage but lack manga-specific context. Metrics include \textbf{BLEU, chrF++, BERTScore, and COMET}.
+The baseline NMT models (ElanMT variants) and the LoRA \cite{hu2022lora} fine-tuned model were benchmarked on standard machine translation test sets: \textbf{Flores+} \cite{nllb-24}, \textbf{NTREX} \cite{federmann-etal-2022-ntrex}, and \textbf{Opus100} \cite{zhang-etal-2020-improving}. These datasets provide diverse linguistic coverage but lack manga-specific context. Metrics include \textbf{BLEU and COMET}.
 
 \subsubsection{End-to-End Pipeline Evaluation}
 
@@ -87,11 +87,11 @@ f(\tau_i) =
 \]
 
 \vspace{1em}
-\textbf{Context-Aware Translation Metrics:}
-
-Unlike sentence-level tests, this evaluation measures translation quality \textbf{in situ}, taking into account text from previous and next bubbles. We report BLEU, BERTScore, and COMET scores computed on the matched speech bubbles.
-
-\vspace{1em}
 \textbf{Handling Detection Failures in Downstream Evaluation:}
 
-A critical consideration for end-to-end pipeline evaluation is the treatment of undetected speech bubbles. When the segmentation model fails to detect a ground-truth bubble, we assign an empty string ("") as the predicted OCR and translation output for that instance. This ensures that downstream metrics (CER, WER, BLEU, chrF++) naturally penalize detection failures through increased edit distances and reduced n-gram overlaps, rather than artificially inflating scores by evaluating only successfully detected bubbles.
+A critical consideration for end-to-end pipeline evaluation is the treatment of undetected speech bubbles. When the segmentation model fails to detect a ground-truth bubble, we assign an empty string ("") as the predicted OCR and translation output for that instance. This ensures that downstream metrics (CER, WER, BLEU, chrF++) naturally penalize detection failures through increased edit distances and reduced n-gram overlaps, rather than artificially inflating scores by evaluating only successfully detected bubbles.\\
+
+\vspace{1em}
+\textbf{Context-Aware Translation Metrics:}
+
+Unlike sentence-level tests, this evaluation measures translation quality in the original place, taking into account text from previous and next bubbles.  We report BLEU and COMET score as the main metrics on the matched speed bubbles.

@@ -43,23 +43,23 @@ Qwen2.5-1.5B & 0.0534& 0.0924 & 0.2779 &0.2573& 0.5788&  0.6896\\
 We benchmarked the fully integrated pipeline using three representative translation models selected from different architectures to demonstrate the trade-offs between model size and quality. Specifically, we evaluated the best-performing configuration for each model family: Mitsua/elan-mt-bt-ja-en (Baseline), Qwen2.5-0.5B-Instruct (Fine-tuned, context\_window=4), and Qwen2.5-1.5B-Instruct (Fine-tuned, context\_window=2).
 
 
-\begin{table}[H]
-\centering
-\caption{Error propagation analysis comparing translation performance}
+%\begin{table}[H]
+%\centering
+%\caption{Error propagation analysis comparing translation performance}
 %\label{tab:error_propagation}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{lccccccc}
-\toprule
-\textbf{Input Type} & \textbf{Trans. CER} & \textbf{BLEU} & \textbf{SacreBLEU} & \textbf{chrF} & \textbf{chrF++} & \textbf{BERTScore} & \textbf{COMET} \\
-\midrule
-OCR Input 
-& 0.8379 & 0.0380 & 0.0764 & 0.2527 & 0.2322 & 0.5605 & 0.6288 \\
-GT Input 
-& 0.8648 & 0.0388 & 0.0852 & 0.2539 & 0.2337 & 0.5591 & -- \\
-\bottomrule
-\end{tabular}
-}
-\end{table}
+%\resizebox{\textwidth}{!}{%
+%\begin{tabular}{lccccccc}
+%\toprule
+%\textbf{Input Type} & \textbf{Trans. CER} & \textbf{BLEU} & \textbf{SacreBLEU} & \textbf{chrF} & \textbf{chrF++} & \textbf{BERTScore} & \textbf{COMET} \\
+%\midrule
+%OCR Input 
+%& 0.8379 & 0.0380 & 0.0764 & 0.2527 & 0.2322 & 0.5605 & 0.6288 \\
+%GT Input 
+%& 0.8648 & 0.0388 & 0.0852 & 0.2539 & 0.2337 & 0.5591 & -- \\
+%\bottomrule
+%\end{tabular}
+%}
+%\end{table}
 
 
 
