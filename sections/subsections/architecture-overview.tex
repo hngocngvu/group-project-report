@@ -1,3 +1,4 @@
-The desktop application \texttt{Lucile} is designed as a modular graphical interface that acts as an abstract layer for a multi-stage machine learning pipeline. The application is built using Python and PySide6 framework, the official Python binding for the Qt project.
-
-The system uses the data by sharing a single object during runtime. The \texttt{AppData} component stores \texttt{image\_path}, \texttt{Image} itself, and the results from each phase across the application's lifecycle. 
+The desktop application "Lucile" is a multi-threaded graphical interface designed to wrap a machine learning pipeline for manga translation. Using Python and the PySide6 framework, the application separates the user interface from resource intensive inference tasks to ensure responsiveness.
+The architecture uses a central MainWindow class that manages two background workers: ModelManager and BatchProcessor.
+ModelManager is a dedicated module running in its own thread responsible for the lazy loading, initialization, and hot swapping of AI models.
+BatchProcessor is an asynchronous module that monitors a file queue and executes the segmentation, OCR, and translation pipeline sequentially.
